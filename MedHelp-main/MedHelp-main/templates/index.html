@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" id="html" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Multi Pred | Home</title>
+    <link rel="icon" href="/MedHelp-main/logo.png">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <style>
+      
+      @media (max-width: 992px) {
+        .collapse {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+      }
+
+      @media (min-width: 992px) {
+        .collapse {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+        }
+        #options {
+          margin-left: 33%;
+        }
+      }
+
+      .active {
+        text-decoration: underline;
+        text-underline-offset: 25%;
+        pointer-events: none;
+        cursor: default;
+      }
+    </style>
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var elem = document.documentElement;
+        var mod = document.getElementById("modeimg");
+        var email = document.getElementById("email-logo");
+        var github = document.getElementById("github-logo");
+        var linkedin = document.getElementById("linkedin-logo");
+
+        var userPreference = localStorage.getItem("modePreference");
+
+        if (userPreference) {
+          elem.dataset.bsTheme = userPreference;
+          mod.src =
+            elem.dataset.bsTheme === "light"
+              ? "/MedHelp-main/image1.jpg "
+              : "/MedHelp-main/dark.png";
+          mod.alt = elem.dataset.bsTheme === "light" ? "Light" : "Dark";
+          email.src =
+            elem.dataset.bsTheme === "dark"
+              ? "/MedHelp-main/email-l.png"
+              : "/MedHelp-main/email.png";
+          github.src =
+            elem.dataset.bsTheme === "dark"
+              ? "/MedHelp-main/github-l.png"
+              : "/MedHelp-main/github.png";
+          linkedin.src =
+            elem.dataset.bsTheme === "dark"
+              ? "/MedHelp-main/linkedin-l.png"
+              : "/MedHelp-main/linkedin.png";
+        }
+      });
+
+      function toggleTheme() {
+        var elem = document.documentElement;
+        var mod = document.getElementById("modeimg");
+        var email = document.getElementById("email-logo");
+        var github = document.getElementById("github-logo");
+        var linkedin = document.getElementById("linkedin-logo");
+
+        elem.dataset.bsTheme =
+          elem.dataset.bsTheme === "light" ? "dark" : "light";
+        mod.src =
+          elem.dataset.bsTheme === "light"
+            ? "/MedHelp-main/light.svg"
+            : "/MedHelp-main/dark.png";
+        mod.alt = elem.dataset.bsTheme === "light" ? "Light" : "Dark";
+        email.src =
+          elem.dataset.bsTheme === "dark"
+            ? "/MedHelp-main/email-l.png"
+            : "/MedHelp-main/email.png";
+        github.src =
+          elem.dataset.bsTheme === "dark"
+            ? "/MedHelp-main/github-l.png"
+            : "/MedHelp-main/github.png";
+        linkedin.src =
+          elem.dataset.bsTheme === "dark"
+            ? "/MedHelp-main/linkedin-l.png"
+            : "/MedHelp-main/linkedin.png";
+
+        localStorage.setItem("modePreference", elem.dataset.bsTheme);
+      }
+    </script>
+  </head>
+  <body>
+    <nav class="navbar p-1 sticky-top navbar-expand-lg bg-body-secondary">
+      <div class="container-fluid">
+        <a href="/">
+          <img
+            src="/MedHelp-main/logo.png"
+            width="30"
+            height="30"
+            alt="logo"
+            id="logo"
+            role="button"
+            style="margin-right: 15px"
+          />
+        </a>
+
+        <a class="navbar-brand" href="index.html">Multi Pred</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div id="options">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/"
+                  >Home</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html">About</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Features
+                </a>
+                
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="diabetes.html">Diabetes Prediction</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="Heart.disease.html"
+                      >Heart Disease Prediction</a
+                    >
+                  </li>
+                  <li><a class="dropdown-item" href="bmi.html">BMI Calculator</a></li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item" href="about.html"
+                      >What are you searching for?</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          
+          
+          <div
+            class="d-flex flex-row justify-content-center align-items-center"
+            id="themeselect"
+          >
+            <img
+              src="/MedHelp-main/dark.png"
+              alt="Dark"
+              id="modeimg"
+              height="18px"
+              onclick="toggleTheme()"
+              style="cursor: pointer"
+            />
+          </div>
+        </div>
+      </div>
+    </nav>
+<!DOCTYPE html>
+<html>
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <strong>Hey!</strong> This website is under development, so all the
+        features may not be available. Thanks for visiting!
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      <!DOCTYPE html>
+      <html>
+      
+      <head>
+          <title>GeeksfoGeeks</title>
+          <style>
+              #frame {
+                  margin: 0 auto;
+                  width: 800px;
+                  max-width: 100%;
+                  text-align: center;
+              }
+      
+              #frame input[type=radio] {
+                  display: none;
+              }
+      
+              #frame label {
+                  cursor: pointer;
+                  text-decoration: none;
+              }
+      
+              #slides {
+                  padding: 10px;
+                  background: #00F;
+                  position: relative;
+                  z-index: 1;
+              }
+      
+              #overflow {
+                  width: 100%;
+                  overflow: hidden;
+              }
+      
+              #frame1:checked~#slides .inner {
+                  margin-left: 0;
+              }
+      
+              #frame2:checked~#slides .inner {
+                  margin-left: -100%;
+              }
+      
+              #frame3:checked~#slides .inner {
+                  margin-left: -200%;
+              }
+      
+              #frame4:checked~#slides .inner {
+                  margin-left: -300%;
+              }
+      
+              #slides .inner {
+                  transition: margin-left 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+                  width: 400%;
+                  line-height: 0;
+                  height: 300px;
+              }
+      
+              #slides .frame {
+                  width: 25%;
+                  float: left;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  height: 100%;
+                  color: #FFF;
+              }
+      
+              #slides .frame_1 {
+                  background: #90C;
+              }
+      
+              #slides .frame_2 {
+                  background: #F90;
+              }
+      
+              #slides .frame_3 {
+                  background: #606;
+              }
+      
+              #slides .frame_4 {
+                  background: #C00;
+              }
+      
+              #controls {
+                  margin: -180px 0 0 0;
+                  width: 100%;
+                  height: 50px;
+                  z-index: 3;
+                  position: relative;
+              }
+      
+              #controls label {
+                  transition: opacity 0.2s ease-out;
+                  display: none;
+                  width: 50px;
+                  height: 50px;
+                  opacity: .4;
+              }
+      
+              #controls label:hover {
+                  opacity: 1;
+              }
+      
+              #frame1:checked~#controls label:nth-child(2),
+              #frame2:checked~#controls label:nth-child(3),
+              #frame3:checked~#controls label:nth-child(4),
+              #frame4:checked~#controls label:nth-child(1) {
+                  background:
+                      url(https://image.flaticon.com/icons/svg/130/130884.svg) no-repeat;
+                  float: right;
+                  margin: 0 -50px 0 0;
+                  display: block;
+              }
+      
+              #frame1:checked~#controls label:nth-last-child(2),
+              #frame2:checked~#controls label:nth-last-child(3),
+              #frame3:checked~#controls label:nth-last-child(4),
+              #frame4:checked~#controls label:nth-last-child(1) {
+                  background:
+                      url(https://image.flaticon.com/icons/svg/130/130882.svg) no-repeat;
+                  float: left;
+                  margin: 0 0 0 -50px;
+                  display: block;
+              }
+      
+              #bullets {
+                  margin: 150px 0 0;
+                  text-align: center;
+              }
+      
+              #bullets label {
+                  display: inline-block;
+                  width: 10px;
+                  height: 10px;
+                  border-radius: 100%;
+                  background: #ccc;
+                  margin: 0 10px;
+              }
+      
+              #frame1:checked~#bullets label:nth-child(1),
+              #frame2:checked~#bullets label:nth-child(2),
+              #frame3:checked~#bullets label:nth-child(3),
+              #frame4:checked~#bullets label:nth-child(4) {
+                  background: #444;
+              }
+      
+              @media screen and (max-width: 900px) {
+      
+                  #frame1:checked~#controls label:nth-child(2),
+                  #frame2:checked~#controls label:nth-child(3),
+                  #frame3:checked~#controls label:nth-child(4),
+                  #frame4:checked~#controls label:nth-child(1),
+                  #frame1:checked~#controls label:nth-last-child(2),
+                  #frame2:checked~#controls label:nth-last-child(3),
+                  #frame3:checked~#controls label:nth-last-child(4),
+                  #frame4:checked~#controls label:nth-last-child(1) {
+                      margin: 0;
+                  }
+      
+                  #slides {
+                      max-width: calc(100% - 140px);
+                      margin: 0 auto;
+                  }
+              }
+          </style>
+      </head>
+      
+      <body>
+          <div id="frame">
+              <input type="radio" name="frame" id="frame1" checked />
+              <input type="radio" name="frame" id="frame2" />
+              <input type="radio" name="frame" id="frame3" />
+              <input type="radio" name="frame" id="frame4" />
+              <div id="slides">
+                  <div id="overflow">
+                      <div class="inner">
+                          <div class="frame frame_1">
+                              <div class="frame-content">
+                                  <h2>Slide 1</h2>
+                                  <img
+                                  src="/MedHelp-main/image1.jpg"
+                                  class="img-fluid"
+                                  style="width: 49rem; height: 24rem"
+                                  alt="..."
+                                />
+                              </div>
+                          </div>
+                          <div class="frame frame_2">
+                              <div class="frame-content">
+                                  <h2>Slide 2</h2>
+                                  <img
+                                  src="/MedHelp-main/image2.jpg"
+                                  class="img-fluid"
+                                  style="width: 49rem; height: 24rem"
+                                  alt="..."
+                                />
+                              </div>
+                          </div>
+                          <div class="frame frame_3">
+                              <div class="frame-content">
+                                  <h2>Slide 3</h2>
+                                  <img
+                                  src="/MedHelp-main/image3.jpg"
+                                  class="img-fluid"
+                                  style="width: 49rem; height: 24rem"
+                                  alt="..."
+                                />
+                              </div>
+                          </div>
+                          <div class="frame frame_4">
+                              <div class="frame-content">
+                                  <h2>Slide 4</h2>
+                                  <img
+                                  src="/MedHelp-main/image4.jpg"
+                                  class="img-fluid"
+                                  style="width: 49rem; height: 24rem"
+                                  alt="..."
+                                />
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div id="controls">
+                  <label for="frame1"></label>
+                  <label for="frame2"></label>
+                  <label for="frame3"></label>
+                  <label for="frame4"></label>
+              </div>
+              <div id="bullets">
+                  <label for="frame1"></label>
+                  <label for="frame2"></label>
+                  <label for="frame3"></label>
+                  <label for="frame4"></label>
+              </div>
+          </div>
+      </body>
+      
+      </html>
+      
+
+
+  <h5 class="card-title text-center mt-4 mb-3">Features</h5>
+  <main
+    class="features mt-1 d-flex justify-content-evenly flex-lg-row flex-column"
+  >
+    <div class="container mt-2 mb-5 d-flex justify-content-center">
+      <div
+        class="card shadow p-3 mb-5 bg-body-tertiary rounded"
+        style="width: 20rem"
+      >
+        <img
+          src="/MedHelp-main/db.png"
+          class="img-fluid"
+          style="width: 18rem; height: 12rem"
+          alt="..."
+        />
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h5 class="card-title text-center">Diabetes Prediction</h5>
+          <p class="card-text text-center">
+            Using Machine Learning to forecast diabetes risk using data
+            analysis. It helps with early detection and pro-active health
+            management.
+          </p>
+          <a href="diabetes.html" class="btn btn-primary">Predict</a>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-2 mb-5 d-flex justify-content-center">
+      <div
+        class="card shadow p-3 mb-5 bg-body-tertiary rounded"
+        style="width: 20rem"
+      >
+        <img
+          src="/MedHelp-main/heart.jpg"
+          class="img-fluid overflow-hidden"
+          style="width: 18rem; height: 12rem"
+          alt="..."
+        />
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h5 class="card-title text-center">Heart Disease Prediction</h5>
+          <p class="card-text text-center">
+            Machine Learning utilizes data analysis and predictive algorithms
+            to assess an individual's risk of Heart disease.
+          </p>
+          <a href="Heart.disease.html" class="btn btn-primary">Predict</a>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-2 mb-5 d-flex justify-content-center">
+      <div
+        class="card shadow p-3 mb-5 bg-body-tertiary rounded"
+        style="width: 20rem"
+      >
+        <img
+          src="/MedHelp-main/bmi.png"
+          class="img-fluid"
+          style="width: 18rem; height: 12rem"
+          alt="..."
+        />
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h5 class="card-title text-center">BMI Calculator</h5>
+          <p class="card-text text-center">
+            A Body Mass Index Calculator is a tool to assess your body weight
+            and health status, helping you make informed decisions about your
+            fitness and well-being.
+          </p>
+          <a href="bmi.html" class="btn btn-primary">Calculate</a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="bg-body-secondary">
+    <div class="card">
+      <div class="card-body">
+        <blockquote class="blockquote mb-0">
+          <p>
+            "Health is the greatest possession. Contentment is the greatest
+            treasure. Confidence is the greatest friend"
+          </p>
+          <footer class="blockquote-footer" style="text-align: right">
+            <cite title="Source Title">Albert Schweitzer</cite>
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+    <div class="card text-center">
+      <div class="card-header"><span style="font-size: 25px;"><strong>Why this matters ?</strong></div></span>
+      <div class="card-body">
+        <h5 class="card-title"> </h5>
+        <p class="card-text"><span style="font-size: 20px;">Diabetes and heart disease are related because high blood sugar levels in the blood of people with diabetes can damage blood vessels and the nerves that control them. This can increase the risk of cardiovascular disease, which is a term for heart disease and stroke. People with diabetes are more than double the risk of developing cardiovascular disease than people who don’t have diabetes and at a younger age. The longer you have diabetes, the more likely you are to have heart disease.</p></span>
+        <a
+          class="link-underline link-underline-opacity-0"
+          href="mailto:mdyasirkhan@gmail.com"
+          target="_blank"
+        >
+          <img
+            class="mx-1"
+            id="email-logo"
+            role="button"
+            src="/MedHelp-main/email-l.png"
+            height="25px"
+            alt="email"
+          />
+        </a>
+        <a
+          class="link-underline link-underline-opacity-0"
+          href=""
+          target="_blank"
+        >
+          <img
+            class="mx-1"
+            id="github-logo"
+            role="button"
+            src="/MedHelp-main/github-l.png"
+            height="25px"
+            alt="github"
+            href=""
+          />
+        </a>
+        <a
+          class="link-underline link-underline-opacity-0"
+          href=" ssss"
+          target="_blank"
+        >
+          <img
+            class="mx-1"
+            id="linkedin-logo"
+            role="button"
+            src="/MedHelp-main/linkedin-l.png"
+            height="25px"
+            alt="linkedin"
+          />
+        </a>
+      </div>
+      <div class="card-footer text-body-secondary">
+        Made with ❤️ by Group 79
+      </div>
+    </div>
+  </footer>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"
+  ></script>
+</body>
+</html>

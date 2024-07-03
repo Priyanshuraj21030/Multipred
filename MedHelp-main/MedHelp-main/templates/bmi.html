@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" id="html" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Multi Pred | BMI Calculator</title>
+    <link rel="icon" href="/MedHelp-main/logo.png">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <style>
+      @media (max-width: 992px) {
+        .collapse {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+      }
+
+      @media (min-width: 992px) {
+        .collapse {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+        }
+        #options {
+          margin-left: 33%;
+        }
+      }
+
+      .active {
+        text-decoration: underline;
+        text-underline-offset: 25%;
+        pointer-events: none;
+        cursor: default;
+      }
+    </style>
+    <script>
+      var unit = 0;
+      document.addEventListener("DOMContentLoaded", function () {
+        var elem = document.documentElement;
+        var mod = document.getElementById("modeimg");
+        var email = document.getElementById("email-logo");
+        var github = document.getElementById("github-logo");
+        var linkedin = document.getElementById("linkedin-logo");
+
+        var userPreference = localStorage.getItem("modePreference");
+
+        if (userPreference) {
+          elem.dataset.bsTheme = userPreference;
+          mod.src =
+            elem.dataset.bsTheme === "light"
+              ? "/MedHelp-main/light.svg"
+              : "/MedHelp-main/dark.png";
+          mod.alt = elem.dataset.bsTheme === "light" ? "Light" : "Dark";
+          email.src =
+            elem.dataset.bsTheme === "dark"
+              ? "/MedHelp-main/email-l.png"
+              : "/MedHelp-main/email.png";
+          github.src =
+            elem.dataset.bsTheme === "dark"
+              ? "/MedHelp-main/github-l.png"
+              : "/MedHelp-main/github.png";
+          linkedin.src =
+            elem.dataset.bsTheme === "dark"
+              ? "/MedHelp-main/linkedin-l.png"
+              : "/MedHelp-main/linkedin.png";
+        }
+      });
+
+      function toggleTheme() {
+        var elem = document.documentElement;
+        var mod = document.getElementById("modeimg");
+        var email = document.getElementById("email-logo");
+        var github = document.getElementById("github-logo");
+        var linkedin = document.getElementById("linkedin-logo");
+
+        elem.dataset.bsTheme =
+          elem.dataset.bsTheme === "light" ? "dark" : "light";
+        mod.src =
+          elem.dataset.bsTheme === "light"
+            ? "/MedHelp-main/light.svg"
+            : "/MedHelp-main/dark.png";
+        mod.alt = elem.dataset.bsTheme === "light" ? "Light" : "Dark";
+        email.src =
+          elem.dataset.bsTheme === "dark"
+            ? "/MedHelp-main/email-l.png"
+            : "/MedHelp-main/email.png";
+        github.src =
+          elem.dataset.bsTheme === "dark"
+            ? "/MedHelp-main/github-l.png"
+            : "/MedHelp-main/github.png";
+        linkedin.src =
+          elem.dataset.bsTheme === "dark"
+            ? "/MedHelp-main/linkedin-l.png"
+            : "/MedHelp-main/linkedin.png";
+
+        localStorage.setItem("modePreference", elem.dataset.bsTheme);
+      }
+
+      function toggleUnits() {
+        unit++;
+        var h = document.getElementById("height-label");
+        var w = document.getElementById("weight-label");
+        var weightInput = document.getElementById("exampleFormControlInput2");
+        var heightInput = document.getElementById("exampleFormControlInput1");
+        var rangeholder = document.getElementById("range-holder");
+        var result = document.getElementById("outputText");
+        weightInput.value = NaN;
+        heightInput.value = NaN;
+        result.innerHTML = "";
+        result.style.color = "";
+        rangeholder.style.display = 'none';
+        h.innerHTML =
+          h.innerHTML == "Height (in cm)"
+            ? "Height (in inches)"
+            : "Height (in cm)";
+        w.innerHTML =
+          w.innerHTML == "Weight (in kg)"
+            ? "Weight (in lbs)"
+            : "Weight (in kg)";
+      }
+
+      function calculateBMI() {
+        var weightInput = document.getElementById("exampleFormControlInput2");
+        var heightInput = document.getElementById("exampleFormControlInput1");
+        var rangeholder = document.getElementById("range-holder");
+        var rangeInput = document.getElementById("bmiRange");
+        var result = document.getElementById("outputText");
+        var color = "";
+
+        var weight = parseFloat(weightInput.value);
+        var height = parseFloat(heightInput.value) / 100; // Convert height to meters
+        var bmi = weight / (height * height);
+        if(unit % 2 == 1){
+          bmi = 0.0703*bmi;
+        }
+        if (!isNaN(bmi) && weight > 0 && height > 0) {
+          var category = "";
+          if (bmi < 18.5) {
+            category = "Underweight";
+            color = "lightblue";
+          } else if (bmi >= 18.5 && bmi < 24.9) {
+            category = "Normal";
+            color = "green";
+          } else if (bmi >= 24.9 && bmi < 29.9) {
+            category = "Overweight";
+            color = "orange";
+          } else {
+            category = "Obese";
+            color = "red";
+          }
+          result.innerHTML =
+            "Your BMI is: " + bmi.toFixed(2) + " (" + category + ")";
+          rangeholder.style.display = 'block'
+          rangeInput.value = bmi;
+          result.style.color = color;
+        } else {
+          result.innerHTML = "Please enter valid values for weight and height.";
+          result.style.color = "";
+          rangeholder.style.display = 'none';
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <nav class="navbar p-1 sticky-top navbar-expand-lg bg-body-secondary">
+      <div class="container-fluid">
+        <a href="/">
+          <img
+            src="/MedHelp-main/logo.png"
+            width="30"
+            height="30"
+            alt="logo"
+            id="logo"
+            role="button"
+            style="margin-right: 15px"
+          />
+        </a>
+
+        <a class="navbar-brand" href="index.html">Multi Pred</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div id="options">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="index.html"
+                  >Home</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html">About</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Features
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="diabetes.html">Diabetes Prediction</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="Heart.disease.html"
+                      >Heart Disease Prediction</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item active" href="bmi.html">BMI Calculator</a>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item" href="about.html"
+                      >What are you searching for?</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="d-flex flex-row justify-content-center align-items-center"
+            id="themeselect"
+          >
+            <img
+              src="/MedHelp-main/dark.png"
+              alt="Dark"
+              id="modeimg"
+              height="18px"
+              onclick="toggleTheme()"
+              style="cursor: pointer"
+            />
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <h1 class="text-center my-2">Body Mass Index Calulator</h1>
+      <form class="bmi" onsubmit="calculateBMI(); return false;">
+        <div class="mb-3">
+          <label
+            for="exampleFormControlInput1"
+            class="form-label"
+            id="height-label"
+            >Height (in cm)</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="exampleFormControlInput1"
+            min="0"
+            step="0.01"
+            placeholder="Enter your height"
+          />
+        </div>
+        <div class="mb-3">
+          <label
+            for="exampleFormControlInput2"
+            class="form-label"
+            id="weight-label"
+            >Weight (in kg)</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="exampleFormControlInput2"
+            min="0"
+            step="0.01"
+            placeholder="enter your weight"
+          />
+        </div>
+        <div
+          class="form-check form-switch d-flex flex-row justify-content-center my-2 p-0"
+        >
+          <span class="mx-2">Imperial</span>
+          <input
+            class="form-check-input mx-1"
+            type="checkbox"
+            role="switch"
+            checked
+            id="flexSwitchCheckDefault"
+            onclick="toggleUnits()"
+          />
+          <span class="mx-2">Metric</span>
+        </div>
+        <div class="row justify-content-center my-3">
+          <div class="col-1">
+            <button class="btn btn-primary" onclick="calculateBMI()">
+              Calculate
+            </button>
+          </div>
+        </div>
+      </form>
+      <p class="out text-center fw-bold" id="outputText"></p>
+      <div class="range-out" id="range-holder" style="display: none">
+        <input
+          type="range"
+          class="form-range"
+          id="bmiRange"
+          min="15"
+          max="40"
+          value="0"
+          disabled
+        />
+      </div>
+    </div>
+
+    <footer class="bg-body-secondary">
+      <div class="card">
+       
+      </div>
+      <div class="card text-center">
+      
+        <div class="card-footer text-body-secondary">
+          Made with ❤️ by Group 79
+        </div>
+      </div>
+    </footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
