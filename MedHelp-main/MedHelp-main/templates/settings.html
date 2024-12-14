@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" id="html" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Multi Pred | Settings</title>
+    <link rel="icon" href="/MedHelp-main/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <style>
+        /* Base styles */
+        :root {
+            --primary-gradient: linear-gradient(45deg, #2937f0, #9f1ae2);
+            --hover-gradient: linear-gradient(45deg, #9f1ae2, #2937f0);
+            --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0c0c1e, #1a1a3c);
+            color: #fff;
+        }
+
+        /* Settings specific styles */
+        .settings-container {
+            padding: 2rem 0;
+        }
+
+        .settings-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .settings-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .settings-section {
+            margin-bottom: 2rem;
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .settings-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Form controls */
+        .form-switch {
+            padding-left: 3rem;
+        }
+
+        .form-check-input {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            width: 3rem;
+            height: 1.5rem;
+            margin-left: -3rem;
+        }
+
+        .form-check-input:checked {
+            background-color: #9f1ae2;
+            border-color: #9f1ae2;
+        }
+
+        .form-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .form-select:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 0.25rem rgba(41, 55, 240, 0.25);
+            color: #fff;
+        }
+
+        /* API Integration section */
+        .api-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .api-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(10px);
+        }
+
+        .api-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        .status-connected {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+
+        .status-disconnected {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .settings-card {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        /* Save button */
+        .save-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary-gradient);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: 500;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .save-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(41, 55, 240, 0.3);
+        }
+
+        /* Success toast */
+        .toast-container {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1050;
+        }
+
+        .toast {
+            background: rgba(40, 167, 69, 0.9);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Keep existing navbar -->
+    <nav class="navbar p-1 sticky-top navbar-expand-lg bg-body-secondary">
+        <!-- ... existing navbar code ... -->
+    </nav>
+
+    <div class="container settings-container">
+        <h1 class="mb-4">Settings</h1>
+
+        <!-- Profile Settings -->
+        <div class="settings-card">
+            <div class="settings-section">
+                <div class="settings-header">
+                    <div class="settings-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Profile Settings</h3>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" value="John Doe">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" value="john@example.com">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="settings-card">
+            <div class="settings-section">
+                <div class="settings-header">
+                    <div class="settings-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Notifications</h3>
+                </div>
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="emailNotif" checked>
+                    <label class="form-check-label" for="emailNotif">Email Notifications</label>
+                </div>
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="pushNotif" checked>
+                    <label class="form-check-label" for="pushNotif">Push Notifications</label>
+                </div>
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="reminderNotif">
+                    <label class="form-check-label" for="reminderNotif">Medication Reminders</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Integrations -->
+        <div class="settings-card">
+            <div class="settings-section">
+                <div class="settings-header">
+                    <div class="settings-icon">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3>Connected Services</h3>
+                </div>
+                <div class="api-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5>Fitbit</h5>
+                            <p class="mb-0">Connect your Fitbit account to sync health data</p>
+                        </div>
+                        <span class="api-status status-disconnected">Disconnected</span>
+                    </div>
+                    <button class="btn btn-outline-primary mt-3">Connect</button>
+                </div>
+                <div class="api-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5>Google Fit</h5>
+                            <p class="mb-0">Sync your activity data from Google Fit</p>
+                        </div>
+                        <span class="api-status status-connected">Connected</span>
+                    </div>
+                    <button class="btn btn-outline-danger mt-3">Disconnect</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preferences -->
+        <div class="settings-card">
+            <div class="settings-section">
+                <div class="settings-header">
+                    <div class="settings-icon">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h3>Preferences</h3>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Theme</label>
+                        <select class="form-select">
+                            <option value="dark">Dark</option>
+                            <option value="light">Light</option>
+                            <option value="system">System Default</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Language</label>
+                        <select class="form-select">
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Privacy Settings -->
+        <div class="settings-card">
+            <div class="settings-section">
+                <div class="settings-header">
+                    <div class="settings-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Privacy</h3>
+                </div>
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="dataSharing">
+                    <label class="form-check-label" for="dataSharing">Share anonymous data for research</label>
+                </div>
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="analytics" checked>
+                    <label class="form-check-label" for="analytics">Allow analytics</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <button class="save-button" onclick="saveSettings()">
+            Save Changes
+        </button>
+    </div>
+
+    <!-- Success Toast -->
+    <div class="toast-container">
+        <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Settings saved successfully!
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function saveSettings() {
+            // Collect all settings
+            const settings = {
+                profile: {
+                    name: document.querySelector('input[type="text"]').value,
+                    email: document.querySelector('input[type="email"]').value
+                },
+                notifications: {
+                    email: document.getElementById('emailNotif').checked,
+                    push: document.getElementById('pushNotif').checked,
+                    reminders: document.getElementById('reminderNotif').checked
+                },
+                preferences: {
+                    theme: document.querySelector('select').value,
+                    language: document.querySelectorAll('select')[1].value
+                },
+                privacy: {
+                    dataSharing: document.getElementById('dataSharing').checked,
+                    analytics: document.getElementById('analytics').checked
+                }
+            };
+
+            // Send to backend (you'll need to implement this)
+            console.log('Saving settings:', settings);
+
+            // Show success toast
+            const toast = new bootstrap.Toast(document.querySelector('.toast'));
+            toast.show();
+
+            // Add success animation to save button
+            const saveBtn = document.querySelector('.save-button');
+            saveBtn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+            setTimeout(() => {
+                saveBtn.innerHTML = 'Save Changes';
+            }, 2000);
+        }
+
+        // Initialize tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+</body>
+</html> 

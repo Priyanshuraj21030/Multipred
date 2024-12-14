@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en" id="html" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Multi Pred | Diabetes Prediction</title>
+    <link rel="icon" href="/MedHelp-main/logo.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+      /* Base styles */
+      :root {
+        --primary-gradient: linear-gradient(45deg, #2937f0, #9f1ae2);
+        --hover-gradient: linear-gradient(45deg, #9f1ae2, #2937f0);
+        --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #0c0c1e, #1a1a3c);
+        color: #fff;
+      }
+
+      .prediction-header {
+        background: var(--primary-gradient);
+        padding: 4rem 0;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .prediction-header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("/MedHelp-main/grid-pattern.svg");
+        opacity: 0.1;
+        animation: backgroundMove 20s linear infinite;
+      }
+
+      .prediction-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        transition: var(--transition);
+        transform-origin: center;
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .prediction-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .form-control {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+        transition: var(--transition);
+        transition: transform 0.3s ease, box-shadow 0.3s ease,
+          background-color 0.3s ease;
+      }
+
+      .form-control:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 0 0.25rem rgba(41, 55, 240, 0.25);
+        color: #fff;
+      }
+
+      .form-control:hover {
+        transform: translateX(5px);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .value-display {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        min-width: 60px;
+        text-align: center;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+      }
+
+      .value-display:hover {
+        transform: scale(1.1);
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .form-range {
+        height: 1.5rem;
+        padding: 0;
+        background: transparent;
+        transition: transform 0.3s ease, box-shadow 0.3s ease,
+          background-color 0.3s ease;
+      }
+
+      .form-range::-webkit-slider-thumb {
+        background: var(--primary-gradient);
+      }
+
+      .form-range::-webkit-slider-runnable-track {
+        background: rgba(255, 255, 255, 0.1);
+        height: 0.5rem;
+        border-radius: 0.25rem;
+      }
+
+      .form-range:hover {
+        transform: scale(1.02);
+      }
+
+      .result-section {
+        display: none;
+      }
+
+      .result-circle {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background: var(--primary-gradient);
+        animation: pulse 2s infinite;
+      }
+
+      .result-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+      }
+
+      .result-label {
+        font-size: 1.2rem;
+        opacity: 0.8;
+      }
+
+      .factor-importance {
+        margin-top: 2rem;
+      }
+
+      .importance-bar {
+        height: 25px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12.5px;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+      }
+
+      .importance-bar:hover {
+        transform: scaleX(1.02);
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .importance-fill {
+        height: 100%;
+        background: var(--primary-gradient);
+        transition: width 1s ease-out;
+      }
+
+      .recommendations {
+        margin-top: 2rem;
+      }
+
+      .recommendation-item {
+        padding: 1rem;
+        border-left: 3px solid;
+        border-image: var(--primary-gradient) 1;
+        margin-bottom: 1rem;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 0 10px 10px 0;
+        transition: var(--transition);
+        transition: transform 0.3s ease, background-color 0.3s ease,
+          padding-left 0.3s ease;
+      }
+
+      .recommendation-item:hover {
+        transform: translateX(10px);
+        background: rgba(255, 255, 255, 0.08);
+        padding-left: 1.8rem;
+      }
+
+      .info-tooltip {
+        color: #9f1ae2;
+        cursor: pointer;
+        margin-left: 0.5rem;
+        transition: var(--transition);
+      }
+
+      .info-tooltip:hover {
+        color: #2937f0;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes backgroundMove {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 100% 100%;
+        }
+      }
+
+      .parameter-explanation {
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .parameter-item {
+        margin-bottom: 1.5rem;
+      }
+
+      .parameter-item h4 {
+        color: #9f1ae2;
+        margin-bottom: 0.5rem;
+      }
+
+      .normal-range {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .risk-gauge {
+        position: relative;
+        width: 200px;
+        height: 100px;
+        margin: 2rem auto;
+        overflow: hidden;
+      }
+
+      .gauge-arc {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 180deg,
+          #28a745 0deg,
+          #ffc107 60deg,
+          #dc3545 120deg,
+          #dc3545 180deg
+        );
+        clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+      }
+
+      .gauge-needle {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 4px;
+        height: 100px;
+        background: #fff;
+        transform-origin: bottom center;
+        transform: rotate(0deg);
+        transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .gauge-labels {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .trend-chart {
+        height: 300px;
+        margin: 2rem 0;
+      }
+
+      .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .loading-spinner {
+        width: 100px;
+        height: 100px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #9f1ae2;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .prevention-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 2rem;
+        height: 100%;
+        transition: var(--transition);
+      }
+
+      .prevention-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .prevention-icon {
+        color: #9f1ae2;
+        margin-bottom: 1rem;
+        transition: transform 0.3s ease;
+      }
+
+      .prevention-card:hover .prevention-icon {
+        transform: scale(1.1);
+      }
+
+      .prevention-list {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+      }
+
+      .prevention-list li {
+        margin-bottom: 0.8rem;
+        padding-left: 1.5rem;
+        position: relative;
+      }
+
+      .prevention-list li:before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #9f1ae2;
+      }
+
+      .prevention-card h4 {
+        color: #fff;
+        margin-bottom: 1.5rem;
+        font-size: 1.25rem;
+      }
+
+      .risk-section {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 1.5rem;
+        height: 100%;
+        transition: var(--transition);
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          background-color 0.3s ease;
+      }
+
+      .risk-section:hover {
+        transform: translateY(-5px) scale(1.01);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .risk-section h4 {
+        color: #fff;
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .risk-section ul li {
+        padding: 0.8rem;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.02);
+        margin-bottom: 0.8rem;
+        transition: var(--transition);
+      }
+
+      .risk-section ul li:hover {
+        background: rgba(255, 255, 255, 0.05);
+        transform: translateX(5px);
+      }
+
+      .risk-section i {
+        width: 25px;
+        text-align: center;
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+
+      .risk-section:hover i {
+        transform: scale(1.2) rotate(5deg);
+        color: #9f1ae2;
+      }
+
+      .recommendation-item i,
+      .risk-section i {
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+
+      .recommendation-item:hover i,
+      .risk-section:hover i {
+        transform: scale(1.2) rotate(5deg);
+        color: #9f1ae2;
+      }
+
+      .btn {
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          background 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(41, 55, 240, 0.3);
+      }
+
+      .result-circle {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(159, 26, 226, 0.4);
+        }
+        70% {
+          transform: scale(1.05);
+          box-shadow: 0 0 0 15px rgba(159, 26, 226, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(159, 26, 226, 0);
+        }
+      }
+
+      .video-container {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+        height: 0;
+        overflow: hidden;
+        border-radius: 15px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: var(--transition);
+      }
+
+      .video-card {
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 15px;
+        padding: 1rem;
+        transition: var(--transition);
+        height: 100%;
+      }
+
+      .video-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .video-info {
+        padding: 1rem;
+      }
+
+      .video-info h5 {
+        color: #fff;
+        margin-bottom: 0.5rem;
+      }
+
+      .video-description {
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+      }
+
+      .video-description h4 {
+        color: #9f1ae2;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Add this navbar section after <body> -->
+    <nav class="navbar p-1 sticky-top navbar-expand-lg bg-body-secondary">
+      <div class="container-fluid">
+        <a href="/">
+          <img
+            src="/MedHelp-main/logo.png"
+            width="30"
+            height="30"
+            alt="logo"
+            id="logo"
+            role="button"
+            style="margin-right: 15px"
+          />
+        </a>
+
+        <a class="navbar-brand" href="index.html">Multi Pred</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div id="options">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="index.html"
+                  >Home</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html">About</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="dashboard.html"
+                >
+                  <i class="fas fa-chart-line me-1"></i>
+                  Dashboard
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Features
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item active" href="diabetes.html"
+                      >Diabetes Prediction</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="Breastcancer.html"
+                      >Breast Cancer Prediction</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="bmi.html">BMI Calculator</a>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item" href="research-insights.html"
+                      >Research Insights</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div class="d-flex align-items-center ms-auto">
+            <div
+              class="d-flex flex-row justify-content-center align-items-center me-3"
+              id="themeselect"
+            >
+              <img
+                src="/MedHelp-main/dark.png"
+                alt="Dark"
+                id="modeimg"
+                height="18px"
+                onclick="toggleTheme()"
+                style="cursor: pointer"
+              />
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+              <a href="login.html" class="btn btn-outline-light btn-sm">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+              </a>
+              <a href="signup.html" class="btn btn-primary btn-sm">
+                <i class="fas fa-user-plus me-2"></i>Sign Up
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <header class="prediction-header">
+      <div class="container">
+        <h1 class="text-center">Diabetes Risk Assessment</h1>
+        <p class="lead text-center text-white-50">
+          Enter your health metrics below for an AI-powered diabetes risk
+          prediction
+        </p>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="prediction-card">
+            <h3 class="mb-4">Input Parameters</h3>
+            <form id="predictionForm">
+              <!-- Glucose Level -->
+              <div class="mb-3">
+                <label class="form-label d-flex justify-content-between">
+                  Glucose Level
+                  <i
+                    class="fas fa-info-circle info-tooltip"
+                    data-bs-toggle="tooltip"
+                    title="Blood glucose level after 2 hours in an oral glucose tolerance test"
+                  ></i>
+                  <span class="value-display" id="glucoseValue">0</span>
+                </label>
+                <input
+                  type="range"
+                  class="form-range"
+                  id="glucose"
+                  min="70"
+                  max="200"
+                  step="1"
+                  value="120"
+                  oninput="updateValue(this, 'glucoseValue')"
+                />
+                <div class="d-flex justify-content-between">
+                  <small>70</small>
+                  <small>200</small>
+                </div>
+              </div>
+
+              <!-- Blood Pressure -->
+              <div class="mb-3">
+                <label class="form-label d-flex justify-content-between">
+                  Blood Pressure
+                  <i
+                    class="fas fa-info-circle info-tooltip"
+                    data-bs-toggle="tooltip"
+                    title="Diastolic blood pressure (mm Hg)"
+                  ></i>
+                  <span class="value-display" id="bpValue">0</span>
+                </label>
+                <input
+                  type="range"
+                  class="form-range"
+                  id="bloodPressure"
+                  min="60"
+                  max="140"
+                  step="1"
+                  value="80"
+                  oninput="updateValue(this, 'bpValue')"
+                />
+                <div class="d-flex justify-content-between">
+                  <small>60</small>
+                  <small>140</small>
+                </div>
+              </div>
+
+              <!-- BMI -->
+              <div class="mb-3">
+                <label class="form-label d-flex justify-content-between">
+                  BMI
+                  <i
+                    class="fas fa-info-circle info-tooltip"
+                    data-bs-toggle="tooltip"
+                    title="Body Mass Index (weight in kg/(height in m)²)"
+                  ></i>
+                  <span class="value-display" id="bmiValue">0</span>
+                </label>
+                <input
+                  type="range"
+                  class="form-range"
+                  id="bmi"
+                  min="18.5"
+                  max="40"
+                  step="0.1"
+                  value="25"
+                  oninput="updateValue(this, 'bmiValue')"
+                />
+                <div class="d-flex justify-content-between">
+                  <small>18.5</small>
+                  <small>40</small>
+                </div>
+              </div>
+
+              <!-- Age -->
+              <div class="mb-3">
+                <label class="form-label d-flex justify-content-between">
+                  Age
+                  <span class="value-display" id="ageValue">0</span>
+                </label>
+                <input
+                  type="range"
+                  class="form-range"
+                  id="age"
+                  min="20"
+                  max="80"
+                  step="1"
+                  value="40"
+                  oninput="updateValue(this, 'ageValue')"
+                />
+                <div class="d-flex justify-content-between">
+                  <small>20</small>
+                  <small>80</small>
+                </div>
+              </div>
+
+              <!-- Family History -->
+              <div class="mb-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="familyHistory"
+                  />
+                  <label class="form-check-label">
+                    Family History of Diabetes
+                    <i
+                      class="fas fa-info-circle info-tooltip"
+                      data-bs-toggle="tooltip"
+                      title="Immediate family member with diabetes"
+                    ></i>
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">
+                Generate Prediction
+              </button>
+            </form>
+          </div>
+
+          <!-- Parameter Explanations -->
+          <div class="prediction-card">
+            <h3 class="mb-4">Understanding the Parameters</h3>
+            <div class="parameter-explanation">
+              <div class="parameter-item">
+                <h4>Glucose Level</h4>
+                <p>
+                  Blood glucose concentration after 2 hours in an oral glucose
+                  tolerance test.
+                </p>
+                <div class="normal-range">
+                  Normal Range: 70-140 mg/dL
+                  <br />
+                  Pre-diabetic: 140-200 mg/dL
+                  <br />
+                  Diabetic: >200 mg/dL
+                </div>
+              </div>
+
+              <div class="parameter-item">
+                <h4>Blood Pressure</h4>
+                <p>Diastolic blood pressure measurement in mm Hg.</p>
+                <div class="normal-range">
+                  Normal: <80 mm Hg
+                  <br />
+                  Elevated: 80-89 mm Hg
+                  <br />
+                  High: ≥90 mm Hg
+                </div>
+              </div>
+
+              <div class="parameter-item">
+                <h4>BMI (Body Mass Index)</h4>
+                <p>A measure of body fat based on height and weight.</p>
+                <div class="normal-range">
+                  Underweight: <18.5
+                  <br />
+                  Normal: 18.5-24.9
+                  <br />
+                  Overweight: 25-29.9
+                  <br />
+                  Obese: ≥30
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="prediction-card">
+            <div id="resultSection" class="result-section">
+              <h3 class="text-center mb-4">Risk Assessment Results</h3>
+
+              <!-- Risk Gauge -->
+              <div class="risk-gauge">
+                <div class="gauge-arc">
+                  <div class="gauge-needle" id="gaugeNeedle"></div>
+                </div>
+                <div class="gauge-labels">
+                  <span>Low</span>
+                  <span>Moderate</span>
+                  <span>High</span>
+                </div>
+              </div>
+
+              <!-- Result Circle -->
+              <div class="result-circle">
+                <div class="result-value">0%</div>
+                <div class="result-label">Risk Level</div>
+              </div>
+
+              <!-- Factor Importance -->
+              <div class="factor-importance">
+                <h4 class="mb-3">Risk Factor Analysis</h4>
+                <div id="factorsList">
+                  <!-- Factors will be populated dynamically -->
+                </div>
+              </div>
+
+              <!-- Recommendations -->
+              <div class="recommendations">
+                <h4 class="mb-3">Personalized Recommendations</h4>
+                <div id="recommendationsList">
+                  <!-- Recommendations will be populated dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Trend Chart -->
+            <div class="trend-chart">
+              <canvas id="riskTrendChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Additional Information Card -->
+          <div class="prediction-card">
+            <h3 class="mb-4">Risk Factors & Prevention</h3>
+            <div class="row">
+              <!-- Risk Factors Column -->
+              <div class="col-md-6">
+                <div class="risk-section">
+                  <h4 class="mb-3">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Risk Factors
+                  </h4>
+                  <ul class="list-unstyled">
+                    <li class="mb-3">
+                      <i class="fas fa-weight me-2 text-warning"></i>
+                      Being overweight or obese
+                    </li>
+                    <li class="mb-3">
+                      <i class="fas fa-running me-2 text-warning"></i>
+                      Physical inactivity
+                    </li>
+                    <li class="mb-3">
+                      <i class="fas fa-heart me-2 text-warning"></i>
+                      High blood pressure
+                    </li>
+                    <li class="mb-3">
+                      <i class="fas fa-utensils me-2 text-warning"></i>
+                      Unhealthy diet
+                    </li>
+                    <li class="mb-3">
+                      <i class="fas fa-smoking me-2 text-warning"></i>
+                      Smoking
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Prevention Strategies Column -->
+              <div class="col-md-6">
+                <div class="risk-section">
+                  <h4 class="mb-3">
+                    <i class="fas fa-shield-alt me-2"></i>Prevention Strategies
+                  </h4>
+                  <ul class="list-unstyled">
+                    <li class="mb-3">
+                      <i class="fas fa-running me-2 text-success"></i>
+                      Regular physical activity
+                    </li>
+                    <li class="mb-3">
+                      <i class="fas fa-weight me-2 text-success"></i>
+                      Maintaining a healthy weight
+                    </li>
+                    <li class="mb-3">
+                      <i class="fas fa-apple-alt me-2 text-success"></i>
+                      Balanced diet
+                    </li>
+                    <li class="mb-3">
+                      <i class="fas fa-user-md me-2 text-success"></i>
+                      Regular health check-ups
+                    </li>
+                    <li class="mb-3">
+                      <i class="fas fa-spa me-2 text-success"></i>
+                      Stress management
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Initialize tooltips
+      var tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      );
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
+      // Update value displays
+      function updateValue(input, displayId) {
+        const display = document.getElementById(displayId);
+        const value = parseFloat(input.value);
+
+        if (input.step === "0.1") {
+          display.textContent = value.toFixed(1);
+        } else {
+          display.textContent = value.toFixed(0);
+        }
+
+        display.style.transform = "scale(1.2)";
+        setTimeout(() => {
+          display.style.transform = "scale(1)";
+        }, 200);
+      }
+
+      // Initialize all value displays
+      document.addEventListener("DOMContentLoaded", function () {
+        const ranges = document.querySelectorAll(".form-range");
+        ranges.forEach((range) => {
+          updateValue(range, range.id + "Value");
+        });
+
+        // Initialize trend chart
+        const ctx = document.getElementById("riskTrendChart").getContext("2d");
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            datasets: [
+              {
+                label: "Risk Score Trend",
+                data: [25, 30, 28, 35, 32, 30],
+                borderColor: "#9f1ae2",
+                tension: 0.4,
+                fill: false,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                labels: { color: "#fff" },
+              },
+            },
+            scales: {
+              y: {
+                grid: { color: "rgba(255, 255, 255, 0.1)" },
+                ticks: { color: "#fff" },
+              },
+              x: {
+                grid: { color: "rgba(255, 255, 255, 0.1)" },
+                ticks: { color: "#fff" },
+              },
+            },
+          },
+        });
+      });
+
+      // Form submission handler
+      document
+        .getElementById("predictionForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          // Show loading overlay
+          document.querySelector(".loading-overlay").style.display = "flex";
+
+          try {
+            // Simulate API call delay
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+
+            // Calculate risk score (example calculation)
+            const glucose = parseInt(document.getElementById("glucose").value);
+            const bp = parseInt(document.getElementById("bloodPressure").value);
+            const bmi = parseFloat(document.getElementById("bmi").value);
+            const age = parseInt(document.getElementById("age").value);
+            const hasHistory = document.getElementById("familyHistory").checked;
+
+            let riskScore = calculateRiskScore(
+              glucose,
+              bp,
+              bmi,
+              age,
+              hasHistory
+            );
+
+            // Update result display
+            updateResults(riskScore);
+
+            // Show result section
+            document.getElementById("resultSection").style.display = "block";
+          } finally {
+            // Hide loading overlay
+            document.querySelector(".loading-overlay").style.display = "none";
+          }
+        });
+
+      function calculateRiskScore(glucose, bp, bmi, age, hasHistory) {
+        let score = 0;
+        let factors = [];
+
+        // Glucose contribution (40% weight)
+        let glucoseRisk = 0;
+        if (glucose > 200) {
+          glucoseRisk = 40; // High risk
+          factors.push({
+            name: "Blood Glucose",
+            risk: "High",
+            value: glucoseRisk,
+            message: "Blood glucose levels indicate high risk of diabetes",
+          });
+        } else if (glucose > 140) {
+          glucoseRisk = 25; // Pre-diabetic
+          factors.push({
+            name: "Blood Glucose",
+            risk: "Moderate",
+            value: glucoseRisk,
+            message: "Pre-diabetic glucose levels detected",
+          });
+        } else if (glucose > 100) {
+          glucoseRisk = 15; // Elevated
+          factors.push({
+            name: "Blood Glucose",
+            risk: "Elevated",
+            value: glucoseRisk,
+            message: "Slightly elevated glucose levels",
+          });
+        } else {
+          factors.push({
+            name: "Blood Glucose",
+            risk: "Normal",
+            value: 0,
+            message: "Normal glucose levels",
+          });
+        }
+        score += glucoseRisk;
+
+        // Blood pressure contribution (20% weight)
+        let bpRisk = 0;
+        if (bp > 90) {
+          bpRisk = 20; // High
+          factors.push({
+            name: "Blood Pressure",
+            risk: "High",
+            value: bpRisk,
+            message: "High blood pressure increases diabetes risk",
+          });
+        } else if (bp > 80) {
+          bpRisk = 10; // Elevated
+          factors.push({
+            name: "Blood Pressure",
+            risk: "Elevated",
+            value: bpRisk,
+            message: "Elevated blood pressure detected",
+          });
+        } else {
+          factors.push({
+            name: "Blood Pressure",
+            risk: "Normal",
+            value: 0,
+            message: "Normal blood pressure",
+          });
+        }
+        score += bpRisk;
+
+        // BMI contribution (20% weight)
+        let bmiRisk = 0;
+        if (bmi > 35) {
+          bmiRisk = 20; // Severely obese
+          factors.push({
+            name: "BMI",
+            risk: "Very High",
+            value: bmiRisk,
+            message: "Severe obesity significantly increases diabetes risk",
+          });
+        } else if (bmi > 30) {
+          bmiRisk = 15; // Obese
+          factors.push({
+            name: "BMI",
+            risk: "High",
+            value: bmiRisk,
+            message: "Obesity increases diabetes risk",
+          });
+        } else if (bmi > 25) {
+          bmiRisk = 10; // Overweight
+          factors.push({
+            name: "BMI",
+            risk: "Moderate",
+            value: bmiRisk,
+            message: "Being overweight increases diabetes risk",
+          });
+        } else {
+          factors.push({
+            name: "BMI",
+            risk: "Normal",
+            value: 0,
+            message: "Healthy BMI range",
+          });
+        }
+        score += bmiRisk;
+
+        // Age contribution (10% weight)
+        let ageRisk = 0;
+        if (age > 65) {
+          ageRisk = 10;
+          factors.push({
+            name: "Age",
+            risk: "High",
+            value: ageRisk,
+            message: "Age is a significant risk factor",
+          });
+        } else if (age > 45) {
+          ageRisk = 7;
+          factors.push({
+            name: "Age",
+            risk: "Moderate",
+            value: ageRisk,
+            message: "Age increases diabetes risk",
+          });
+        } else if (age > 35) {
+          ageRisk = 4;
+          factors.push({
+            name: "Age",
+            risk: "Low",
+            value: ageRisk,
+            message: "Age contributes slightly to risk",
+          });
+        } else {
+          factors.push({
+            name: "Age",
+            risk: "Very Low",
+            value: 0,
+            message: "Age is not a significant factor",
+          });
+        }
+        score += ageRisk;
+
+        // Family history contribution (10% weight)
+        if (hasHistory) {
+          score += 10;
+          factors.push({
+            name: "Family History",
+            risk: "High",
+            value: 10,
+            message: "Family history increases diabetes risk",
+          });
+        }
+
+        // Calculate interaction effects
+        if (bmi > 30 && glucose > 140) {
+          score += 5; // Additional risk for combined high BMI and glucose
+          factors.push({
+            name: "Combined Risk",
+            risk: "High",
+            value: 5,
+            message:
+              "High BMI combined with elevated glucose increases risk significantly",
+          });
+        }
+
+        if (age > 45 && hasHistory) {
+          score += 3; // Additional risk for age and family history
+          factors.push({
+            name: "Age-History Interaction",
+            risk: "High",
+            value: 3,
+            message: "Age combined with family history increases risk",
+          });
+        }
+
+        // Update the UI with detailed risk breakdown
+        updateRiskFactors(factors);
+
+        return {
+          score: Math.min(score, 100), // Cap at 100%
+          factors: factors,
+          riskLevel: getRiskLevel(score),
+        };
+      }
+
+      function getRiskLevel(score) {
+        if (score < 20) return { level: "Low", color: "#28a745" };
+        if (score < 40) return { level: "Moderate", color: "#ffc107" };
+        if (score < 60) return { level: "High", color: "#fd7e14" };
+        return { level: "Very High", color: "#dc3545" };
+      }
+
+      function updateRiskFactors(factors) {
+        const factorsList = document.getElementById("factorsList");
+        factorsList.innerHTML = factors
+          .map(
+            (factor) => `
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+              <span>${factor.name}</span>
+              <span class="badge bg-${getRiskBadgeClass(factor.risk)}">${
+              factor.value
+            }%</span>
+            </div>
+            <div class="importance-bar">
+              <div class="importance-fill bg-${getRiskBadgeClass(factor.risk)}" 
+                   style="width: ${factor.value}%"></div>
+            </div>
+            <small class="text-muted">${factor.message}</small>
+          </div>
+        `
+          )
+          .join("");
+      }
+
+      function getRiskBadgeClass(risk) {
+        switch (risk.toLowerCase()) {
+          case "very high":
+            return "danger";
+          case "high":
+            return "warning text-dark";
+          case "moderate":
+            return "info";
+          case "low":
+            return "success";
+          default:
+            return "secondary";
+        }
+      }
+
+      function updateResults(riskScore) {
+        // Update result circle
+        document.querySelector(".result-value").textContent = `${riskScore}%`;
+
+        // Update risk label and color
+        const resultLabel = document.querySelector(".result-label");
+        const resultCircle = document.querySelector(".result-circle");
+
+        if (riskScore < 20) {
+          resultLabel.textContent = "Low Risk";
+          resultCircle.style.background =
+            "linear-gradient(45deg, #28a745, #34ce57)";
+        } else if (riskScore < 50) {
+          resultLabel.textContent = "Moderate Risk";
+          resultCircle.style.background =
+            "linear-gradient(45deg, #ffc107, #ffdb4a)";
+        } else {
+          resultLabel.textContent = "High Risk";
+          resultCircle.style.background =
+            "linear-gradient(45deg, #dc3545, #ff4d5e)";
+        }
+
+        // Update gauge needle
+        const needleRotation = (riskScore / 100) * 180;
+        document.getElementById(
+          "gaugeNeedle"
+        ).style.transform = `rotate(${needleRotation}deg)`;
+
+        // Update factor importance
+        updateFactorImportance();
+
+        // Update recommendations
+        updateRecommendations(riskScore);
+      }
+
+      function updateFactorImportance() {
+        const factors = [
+          { name: "Glucose Level", importance: 40 },
+          { name: "Blood Pressure", importance: 20 },
+          { name: "BMI", importance: 20 },
+          { name: "Age", importance: 10 },
+          { name: "Family History", importance: 10 },
+        ];
+
+        const factorsList = document.getElementById("factorsList");
+        factorsList.innerHTML = factors
+          .map(
+            (factor) => `
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+              <span>${factor.name}</span>
+              <span>${factor.importance}%</span>
+            </div>
+            <div class="importance-bar">
+              <div class="importance-fill" style="width: ${factor.importance}%"></div>
+            </div>
+          </div>
+        `
+          )
+          .join("");
+      }
+
+      function updateRecommendations(riskScore) {
+        const recommendations = [];
+
+        if (riskScore >= 50) {
+          recommendations.push({
+            icon: "fa-user-md",
+            text: "Schedule an immediate consultation with a healthcare provider",
+          });
+        }
+
+        recommendations.push(
+          {
+            icon: "fa-heartbeat",
+            text: "Maintain regular physical activity (150 minutes per week)",
+          },
+          {
+            icon: "fa-apple-alt",
+            text: "Follow a balanced, low-glycemic diet",
+          },
+          {
+            icon: "fa-weight",
+            text: "Monitor weight and maintain a healthy BMI",
+          }
+        );
+
+        const recommendationsList = document.getElementById(
+          "recommendationsList"
+        );
+        recommendationsList.innerHTML = recommendations
+          .map(
+            (rec) => `
+          <div class="recommendation-item">
+            <i class="fas ${rec.icon} me-3"></i>
+            <span>${rec.text}</span>
+          </div>
+        `
+          )
+          .join("");
+      }
+    </script>
+  </body>
+</html>

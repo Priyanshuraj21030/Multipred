@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en" id="html" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Multi Pred | Research Insights</title>
+    <link rel="icon" href="/MedHelp-main/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+      /* Base styles */
+      :root {
+        --primary-gradient: linear-gradient(45deg, #2937f0, #9f1ae2);
+        --hover-gradient: linear-gradient(45deg, #9f1ae2, #2937f0);
+        --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #0c0c1e, #1a1a3c);
+        color: #fff;
+      }
+
+      .research-header {
+        background: var(--primary-gradient);
+        padding: 4rem 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .research-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        transition: var(--transition);
+      }
+
+      .research-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .stat-highlight {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+      }
+
+      .reference-link {
+        color: #9f1ae2;
+        text-decoration: none;
+        transition: var(--transition);
+      }
+
+      .reference-link:hover {
+        color: #2937f0;
+      }
+
+      .timeline {
+        position: relative;
+        padding: 2rem 0;
+      }
+
+      .timeline-item {
+        padding: 2rem;
+        border-left: 3px solid;
+        border-image: var(--primary-gradient) 1;
+        margin-left: 2rem;
+        position: relative;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 0 15px 15px 0;
+      }
+
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -10px;
+        top: 50%;
+        width: 20px;
+        height: 20px;
+        background: var(--primary-gradient);
+        border-radius: 50%;
+        transform: translateY(-50%);
+      }
+
+      .papers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .paper-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 15px;
+        padding: 1.5rem;
+        transition: var(--transition);
+      }
+
+      .paper-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .paper-journal {
+        color: #9f1ae2;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .paper-stats {
+        display: flex;
+        gap: 1rem;
+        margin: 1rem 0;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .calculator-container {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 15px;
+        padding: 2rem;
+      }
+
+      .risk-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: var(--primary-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 1rem auto;
+        transition: transform 0.3s ease;
+      }
+
+      .risk-value {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+
+      .accordion-item {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 1rem;
+      }
+
+      .accordion-button {
+        color: #fff !important;
+      }
+
+      .accordion-button:not(.collapsed) {
+        background: var(--primary-gradient) !important;
+      }
+
+      .accordion-button::after {
+        filter: invert(1);
+      }
+
+      .risk-circle {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: var(--primary-gradient);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 1rem auto;
+        transition: transform 0.3s ease;
+      }
+
+      .risk-value {
+        font-size: 3rem;
+        font-weight: bold;
+      }
+
+      .risk-label {
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+      }
+
+      .risk-factors {
+        text-align: left;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 1rem;
+      }
+
+      .badge {
+        background: var(--primary-gradient) !important;
+      }
+
+      /* Enhanced animations */
+      @keyframes floatIn {
+        0% {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes scaleIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes slideFromLeft {
+        0% {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes slideFromRight {
+        0% {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes rotateIn {
+        0% {
+          opacity: 0;
+          transform: rotate(-180deg) scale(0.7);
+        }
+        100% {
+          opacity: 1;
+          transform: rotate(0) scale(1);
+        }
+      }
+
+      /* Apply animations to elements */
+      .research-header {
+        animation: scaleIn 1s ease-out;
+      }
+
+      .stat-highlight {
+        animation: rotateIn 0.8s ease-out;
+      }
+
+      .research-card {
+        opacity: 0;
+        animation: floatIn 0.8s ease-out forwards;
+      }
+
+      .timeline-item {
+        opacity: 0;
+        animation: slideFromLeft 0.8s ease-out forwards;
+      }
+
+      .timeline-item:nth-child(even) {
+        animation: slideFromRight 0.8s ease-out forwards;
+      }
+
+      /* Add animation delays for cascade effect */
+      .research-card:nth-child(1) { animation-delay: 0.2s; }
+      .research-card:nth-child(2) { animation-delay: 0.4s; }
+      .research-card:nth-child(3) { animation-delay: 0.6s; }
+
+      .timeline-item:nth-child(1) { animation-delay: 0.3s; }
+      .timeline-item:nth-child(2) { animation-delay: 0.6s; }
+      .timeline-item:nth-child(3) { animation-delay: 0.9s; }
+
+      /* Enhanced hover effects */
+      .research-card {
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    background 0.3s ease,
+                    box-shadow 0.3s ease;
+      }
+
+      .research-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Animated background gradient */
+      .research-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, #2937f0, #9f1ae2, #2937f0);
+        background-size: 200% 200%;
+        animation: gradientMove 15s ease infinite;
+        z-index: -1;
+      }
+
+      @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      /* Animated icons */
+      .research-card i {
+        transition: transform 0.3s ease;
+      }
+
+      .research-card:hover i {
+        transform: scale(1.2) rotate(360deg);
+      }
+
+      /* Scroll reveal animation */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease;
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Enhanced chart animations */
+      .chart-container {
+        opacity: 0;
+        transform: scale(0.95);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .chart-container.active {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      /* Risk calculator animations */
+      .risk-circle {
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                    background 0.3s ease;
+      }
+
+      .risk-value {
+        transition: all 0.3s ease;
+      }
+
+      .risk-factors li {
+        opacity: 0;
+        transform: translateX(-20px);
+        animation: slideInFactor 0.5s ease forwards;
+      }
+
+      @keyframes slideInFactor {
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .detailed-list li {
+        margin-bottom: 1.5rem;
+      }
+
+      .detailed-list strong {
+        color: #9f1ae2;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .mechanism-diagram {
+        background: rgba(255, 255, 255, 0.02);
+        padding: 1rem;
+        border-radius: 10px;
+      }
+
+      .trend-metrics {
+        list-style: none;
+        padding: 0;
+      }
+
+      .trend-metrics li {
+        margin-bottom: 1rem;
+      }
+
+      .metric-label {
+        display: block;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 0.25rem;
+      }
+
+      .metric-value {
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+
+      .metric-value.high { color: #dc3545; }
+      .metric-value.increasing { color: #dc3545; }
+      .metric-value.moderate { color: #ffc107; }
+      .metric-value.low { color: #28a745; }
+
+      .sub-metrics {
+        list-style: none;
+        padding-left: 1rem;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .risk-section {
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: var(--transition);
+      }
+
+      .risk-section:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .risk-level {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+
+      .recommendation-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .recommendation-item {
+        background: rgba(255, 255, 255, 0.02);
+        padding: 1rem;
+        border-radius: 10px;
+      }
+
+      .recommendation-item h4 {
+        color: #9f1ae2;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      }
+
+      .recommendation-item ul {
+        padding-left: 1.5rem;
+      }
+
+      .recommendation-item li {
+        margin-bottom: 0.5rem;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .prevention-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 2rem;
+        height: 100%;
+        transition: var(--transition);
+      }
+
+      .prevention-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .prevention-icon {
+        color: #9f1ae2;
+        margin-bottom: 1rem;
+        transition: transform 0.3s ease;
+      }
+
+      .prevention-card:hover .prevention-icon {
+        transform: scale(1.1);
+      }
+
+      .prevention-list {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+      }
+
+      .prevention-list li {
+        margin-bottom: 0.8rem;
+        padding-left: 1.5rem;
+        position: relative;
+      }
+
+      .prevention-list li:before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        color: #9f1ae2;
+      }
+
+      .prevention-card h4 {
+        color: #fff;
+        margin-bottom: 1.5rem;
+        font-size: 1.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Add this navbar section after the opening body tag -->
+    <nav class="navbar p-1 sticky-top navbar-expand-lg bg-body-secondary">
+      <div class="container-fluid">
+        <a href="/">
+          <img
+            src="/MedHelp-main/logo.png"
+            width="30"
+            height="30"
+            alt="logo"
+            id="logo"
+            role="button"
+            style="margin-right: 15px"
+          />
+        </a>
+
+        <a class="navbar-brand" href="index.html">Multi Pred</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div id="options">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center" href="dashboard.html">
+                  <i class="fas fa-chart-line me-1"></i>
+                  Dashboard
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Features
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="diabetes.html">Diabetes Prediction</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="Breastcancer.html">Breast Cancer Prediction</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="bmi.html">BMI Calculator</a>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item active" href="research-insights.html">Research Insights</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div class="d-flex align-items-center ms-auto">
+            <div class="d-flex flex-row justify-content-center align-items-center me-3" id="themeselect">
+              <img src="/MedHelp-main/dark.png" alt="Dark" id="modeimg" height="18px" onclick="toggleTheme()" style="cursor: pointer"/>
+            </div>
+            
+            <div class="d-flex align-items-center gap-2">
+              <a href="login.html" class="btn btn-outline-light btn-sm">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+              </a>
+              <a href="signup.html" class="btn btn-primary btn-sm">
+                <i class="fas fa-user-plus me-2"></i>Sign Up
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <header class="research-header">
+      <div class="container">
+        <h1 class="display-4 text-center mb-4">Understanding the Connection</h1>
+        <p class="lead text-center text-white-50">
+          Exploring the relationship between Diabetes and Breast Cancer Risk
+        </p>
+      </div>
+    </header>
+
+    <main class="container py-5">
+      <!-- Key Statistics -->
+      <div class="research-card">
+        <h2 class="mb-4">Key Research Findings</h2>
+        <div class="row g-4">
+          <div class="col-md-4 text-center">
+            <div class="stat-highlight">20-27%</div>
+            <p>Higher risk of breast cancer in women with type 2 diabetes</p>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="stat-highlight">2.2x</div>
+            <p>Increased mortality rate in breast cancer patients with diabetes</p>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="stat-highlight">15-20%</div>
+            <p>Risk reduction through early detection and management</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Research Statistics with Interactive Charts -->
+      <div class="research-card">
+        <h2 class="mb-4">Detailed Research Statistics</h2>
+        <div class="row g-4">
+          <div class="col-md-6">
+            <canvas id="riskFactorsChart" height="300"></canvas>
+            <p class="text-center mt-3">Risk Factors Distribution</p>
+          </div>
+          <div class="col-md-6">
+            <canvas id="survivalRateChart" height="300"></canvas>
+            <p class="text-center mt-3">5-Year Survival Rate Comparison</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Medical Explanations -->
+      <div class="research-card">
+        <h2 class="mb-4">Medical Mechanisms</h2>
+        <div class="accordion" id="medicalExplanations">
+          <div class="accordion-item bg-transparent">
+            <h3 class="accordion-header">
+              <button class="accordion-button bg-transparent text-light" type="button" data-bs-toggle="collapse" data-bs-target="#mechanism1">
+                Insulin Resistance and Cancer Growth
+              </button>
+            </h3>
+            <div id="mechanism1" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                <p>Insulin resistance leads to hyperinsulinemia, which can:</p>
+                <ul>
+                  <li>Increase IGF-1 production, promoting cell proliferation</li>
+                  <li>Enhance angiogenesis in tumor tissues</li>
+                  <li>Activate PI3K/Akt signaling pathway</li>
+                </ul>
+                <a href="https://doi.org/10.1016/j.diabres.2020.108267" class="reference-link" target="_blank">
+                  View Research Paper <i class="fas fa-external-link-alt ms-1"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- Add more accordion items for other mechanisms -->
+        </div>
+      </div>
+
+      <!-- Detailed Explanations -->
+      <div class="research-card">
+        <h2 class="mb-4">Detailed Disease Mechanisms</h2>
+        <div class="accordion" id="detailedExplanations">
+          <div class="accordion-item bg-transparent">
+            <h3 class="accordion-header">
+              <button class="accordion-button bg-transparent text-light" type="button" data-bs-toggle="collapse" data-bs-target="#mechanism1">
+                Insulin Resistance & Cancer Cell Growth
+              </button>
+            </h3>
+            <div id="mechanism1" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                <h4 class="text-primary mb-3">Primary Mechanisms</h4>
+                <ul class="detailed-list">
+                  <li>
+                    <strong>Hyperinsulinemia:</strong>
+                    <p>Elevated insulin levels stimulate insulin and IGF-1 receptors, promoting cell proliferation and inhibiting apoptosis.</p>
+                  </li>
+                  <li>
+                    <strong>Metabolic Dysregulation:</strong>
+                    <p>Altered glucose metabolism in cancer cells leads to increased energy availability for tumor growth.</p>
+                  </li>
+                  <li>
+                    <strong>Inflammatory Response:</strong>
+                    <p>Chronic inflammation associated with diabetes creates an environment conducive to cancer development.</p>
+                  </li>
+                </ul>
+                <div class="mechanism-diagram mt-4">
+                  <img src="/path/to/mechanism-diagram.png" alt="Disease Mechanism" class="img-fluid">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item bg-transparent">
+            <h3 class="accordion-header">
+              <button class="accordion-button collapsed bg-transparent text-light" type="button" data-bs-toggle="collapse" data-bs-target="#mechanism2">
+                Hormonal Interactions
+              </button>
+            </h3>
+            <div id="mechanism2" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                <h4 class="text-primary mb-3">Hormonal Pathways</h4>
+                <ul class="detailed-list">
+                  <li>
+                    <strong>Estrogen Signaling:</strong>
+                    <p>Insulin resistance affects estrogen production and bioavailability, potentially increasing breast cancer risk.</p>
+                  </li>
+                  <li>
+                    <strong>Growth Factors:</strong>
+                    <p>Elevated insulin levels increase IGF-1 production, creating a pro-growth environment.</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Risk Trend Tracking -->
+      <div class="research-card">
+        <h2 class="mb-4">Risk Trend Analysis</h2>
+        <div class="row">
+          <div class="col-md-8">
+            <canvas id="riskTrendChart" height="300"></canvas>
+          </div>
+          <div class="col-md-4">
+            <div class="trend-summary">
+              <h4>Trend Summary</h4>
+              <ul class="trend-metrics">
+                <li>
+                  <span class="metric-label">Current Risk Level:</span>
+                  <span class="metric-value high">High</span>
+                </li>
+                <li>
+                  <span class="metric-label">30-Day Trend:</span>
+                  <span class="metric-value increasing">↑ Increasing</span>
+                </li>
+                <li>
+                  <span class="metric-label">Key Factors:</span>
+                  <ul class="sub-metrics">
+                    <li>Blood Sugar Levels</li>
+                    <li>BMI Changes</li>
+                    <li>Activity Level</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Risk-Based Recommendations -->
+      <div class="research-card">
+        <h2 class="mb-4">Personalized Recommendations</h2>
+        <div class="recommendations-container">
+          <!-- High Risk Recommendations -->
+          <div class="risk-section high-risk">
+            <h3 class="risk-level">
+              <i class="fas fa-exclamation-triangle text-danger me-2"></i>
+              High Risk Recommendations
+            </h3>
+            <div class="recommendation-list">
+              <div class="recommendation-item">
+                <h4>Immediate Actions</h4>
+                <ul>
+                  <li>Schedule comprehensive health screening</li>
+                  <li>Consult with endocrinologist</li>
+                  <li>Begin blood sugar monitoring</li>
+                </ul>
+              </div>
+              <div class="recommendation-item">
+                <h4>Lifestyle Changes</h4>
+                <ul>
+                  <li>Implement strict dietary controls</li>
+                  <li>Start supervised exercise program</li>
+                  <li>Regular stress management practices</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Moderate Risk Recommendations -->
+          <div class="risk-section moderate-risk">
+            <h3 class="risk-level">
+              <i class="fas fa-exclamation-circle text-warning me-2"></i>
+              Moderate Risk Recommendations
+            </h3>
+            <div class="recommendation-list">
+              <div class="recommendation-item">
+                <h4>Preventive Measures</h4>
+                <ul>
+                  <li>Regular health check-ups</li>
+                  <li>Balanced diet plan</li>
+                  <li>Moderate exercise routine</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Low Risk Recommendations -->
+          <div class="risk-section low-risk">
+            <h3 class="risk-level">
+              <i class="fas fa-check-circle text-success me-2"></i>
+              Low Risk Maintenance
+            </h3>
+            <div class="recommendation-list">
+              <div class="recommendation-item">
+                <h4>Maintenance Strategy</h4>
+                <ul>
+                  <li>Annual health screenings</li>
+                  <li>Healthy lifestyle maintenance</li>
+                  <li>Regular physical activity</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scientific References -->
+      <div class="research-card">
+        <h2 class="mb-4">Key Research Papers</h2>
+        <div class="papers-grid">
+          <div class="paper-card">
+            <div class="paper-journal">Diabetes Care, 2021</div>
+            <h4>Association Between Type 2 Diabetes and Breast Cancer Risk</h4>
+            <p>Meta-analysis of 45 studies showing increased breast cancer risk in diabetic women</p>
+            <div class="paper-stats">
+              <span><i class="fas fa-users"></i> 2.3M participants</span>
+              <span><i class="fas fa-chart-line"></i> 27% increased risk</span>
+            </div>
+            <a href="https://care.diabetesjournals.org" class="reference-link" target="_blank">
+              Read Full Paper <i class="fas fa-external-link-alt ms-1"></i>
+            </a>
+          </div>
+          <!-- Add more paper cards -->
+        </div>
+      </div>
+
+      <!-- Downloadable Research Summary -->
+      <div class="research-card text-center">
+        <h2 class="mb-4">Research Summary</h2>
+        <p class="mb-4">Download our comprehensive research summary including latest findings and recommendations</p>
+        <div class="d-flex justify-content-center gap-3">
+          <a href="/downloads/research-summary.pdf" class="btn btn-primary" download>
+            <i class="fas fa-file-pdf me-2"></i>Download PDF
+          </a>
+          <a href="/downloads/research-data.xlsx" class="btn btn-primary" download>
+            <i class="fas fa-file-excel me-2"></i>Download Data
+          </a>
+        </div>
+      </div>
+
+      <!-- Research Timeline -->
+      <div class="timeline">
+        <h2 class="mb-4">Research Evolution</h2>
+        <div class="timeline-item mb-4">
+          <h3>Initial Discoveries</h3>
+          <p>Early studies identified correlation between diabetes and increased cancer risk</p>
+          <a href="#" class="reference-link">View Research Paper <i class="fas fa-external-link-alt ms-1"></i></a>
+        </div>
+        <div class="timeline-item mb-4">
+          <h3>Mechanism Understanding</h3>
+          <p>Research revealed shared risk factors and biological mechanisms</p>
+          <a href="#" class="reference-link">View Research Paper <i class="fas fa-external-link-alt ms-1"></i></a>
+        </div>
+        <div class="timeline-item">
+          <h3>Current Research</h3>
+          <p>Modern studies focus on prevention strategies and early detection</p>
+          <a href="#" class="reference-link">View Research Paper <i class="fas fa-external-link-alt ms-1"></i></a>
+        </div>
+      </div>
+
+      <!-- Key Mechanisms -->
+      <div class="research-card">
+        <h2 class="mb-4">Key Mechanisms</h2>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <h4><i class="fas fa-dna me-2"></i>Insulin Resistance</h4>
+            <p>High insulin levels can promote tumor growth and cell proliferation</p>
+          </div>
+          <div class="col-md-4">
+            <h4><i class="fas fa-chart-line me-2"></i>Inflammation</h4>
+            <p>Chronic inflammation in diabetes may contribute to cancer development</p>
+          </div>
+          <div class="col-md-4">
+            <h4><i class="fas fa-microscope me-2"></i>Hormonal Changes</h4>
+            <p>Altered hormone levels affect breast tissue development and function</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prevention Strategies -->
+      <div class="research-card">
+        <h2 class="mb-4">Prevention Strategies</h2>
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="prevention-card">
+              <div class="prevention-icon">
+                <i class="fas fa-search-plus fa-2x"></i>
+              </div>
+              <h4>Early Detection</h4>
+              <ul class="prevention-list">
+                <li>Regular health screenings every 6 months</li>
+                <li>Daily blood sugar level monitoring</li>
+                <li>Monthly breast self-examinations</li>
+                <li>Annual mammograms after age 40</li>
+                <li>Regular consultations with healthcare providers</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="prevention-card">
+              <div class="prevention-icon">
+                <i class="fas fa-heartbeat fa-2x"></i>
+              </div>
+              <h4>Lifestyle Modifications</h4>
+              <ul class="prevention-list">
+                <li>Maintain BMI within healthy range (18.5-24.9)</li>
+                <li>150 minutes of moderate exercise weekly</li>
+                <li>Balanced diet rich in fruits and vegetables</li>
+                <li>Limit processed foods and sugary drinks</li>
+                <li>Stress management techniques</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add this new visualization section after the existing charts -->
+      <div class="research-card">
+        <h2 class="mb-4">Advanced Data Visualizations</h2>
+        <div class="row g-4">
+          <!-- Radar Chart -->
+          <div class="col-md-6">
+            <canvas id="riskRadarChart" height="300"></canvas>
+            <p class="text-center mt-3">Risk Factor Comparison</p>
+          </div>
+          <!-- Doughnut Chart -->
+          <div class="col-md-6">
+            <canvas id="outcomesPieChart" height="300"></canvas>
+            <p class="text-center mt-3">Treatment Outcomes Distribution</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enhanced Risk Calculator -->
+      <div class="research-card">
+        <h2 class="mb-4">Advanced Risk Assessment Calculator</h2>
+        <div class="calculator-container">
+          <div class="row">
+            <div class="col-md-6">
+              <!-- Age Input -->
+              <div class="form-group mb-3">
+                <label>Age</label>
+                <input type="range" class="form-range" id="ageInput" min="20" max="80" value="50">
+                <div class="d-flex justify-content-between">
+                  <span>20</span>
+                  <span id="ageValue">50</span>
+                  <span>80</span>
+                </div>
+              </div>
+              
+              <!-- Diabetes Duration -->
+              <div class="form-group mb-3">
+                <label>Years with Diabetes</label>
+                <input type="range" class="form-range" id="diabetesYearsInput" min="0" max="30" value="5">
+                <div class="d-flex justify-content-between">
+                  <span>0</span>
+                  <span id="diabetesYearsValue">5</span>
+                  <span>30</span>
+                </div>
+              </div>
+              
+              <!-- BMI Input -->
+              <div class="form-group mb-3">
+                <label>BMI</label>
+                <input type="range" class="form-range" id="bmiInput" min="18.5" max="40" step="0.1" value="25">
+                <div class="d-flex justify-content-between">
+                  <span>18.5</span>
+                  <span id="bmiValue">25.0</span>
+                  <span>40</span>
+                </div>
+              </div>
+              
+              <!-- Family History -->
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="familyHistoryInput">
+                <label class="form-check-label">Family History of Breast Cancer</label>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="risk-display text-center">
+                <h4>Risk Assessment</h4>
+                <div class="risk-circle" id="riskDisplay">
+                  <div class="risk-value">1.0x</div>
+                  <div class="risk-label mt-2">Baseline Risk</div>
+                </div>
+                <div class="risk-factors mt-3">
+                  <h5>Contributing Factors:</h5>
+                  <ul class="list-unstyled" id="riskFactorsList">
+                    <!-- Factors will be populated dynamically -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Move this section to the bottom of the page, before </main> -->
+      <div class="research-card text-center">
+        <h2 class="mb-4">Take Action Today</h2>
+        <p class="lead mb-4">Early detection and prevention are key to better health outcomes</p>
+        <div class="d-flex justify-content-center gap-3">
+          <a href="diabetes.html" class="btn btn-primary">Check Diabetes Risk</a>
+          <a href="Breastcancer.html" class="btn btn-primary">Check Breast Cancer Risk</a>
+        </div>
+      </div>
+    </main>
+
+    <!-- Include your footer here -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // Initialize charts
+    const riskFactorsCtx = document.getElementById('riskFactorsChart').getContext('2d');
+    const survivalRateCtx = document.getElementById('survivalRateChart').getContext('2d');
+
+    new Chart(riskFactorsCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Obesity', 'Diabetes', 'Family History', 'Age', 'Lifestyle'],
+        datasets: [{
+          label: 'Risk Factor Impact',
+          data: [35, 27, 25, 20, 15],
+          backgroundColor: 'rgba(159, 26, 226, 0.5)',
+          borderColor: '#9f1ae2',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: { color: '#fff' }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+            ticks: { color: '#fff' }
+          },
+          x: {
+            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+            ticks: { color: '#fff' }
+          }
+        }
+      }
+    });
+
+    new Chart(survivalRateCtx, {
+      type: 'line',
+      data: {
+        labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+        datasets: [{
+          label: 'With Diabetes',
+          data: [95, 85, 75, 68, 60],
+          borderColor: '#9f1ae2',
+          fill: false
+        }, {
+          label: 'Without Diabetes',
+          data: [98, 92, 85, 80, 75],
+          borderColor: '#2937f0',
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: { color: '#fff' }
+          }
+        },
+        scales: {
+          y: {
+            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+            ticks: { color: '#fff' }
+          },
+          x: {
+            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+            ticks: { color: '#fff' }
+          }
+        }
+      }
+    });
+
+    // Initialize new charts
+    const radarCtx = document.getElementById('riskRadarChart').getContext('2d');
+    const pieCtx = document.getElementById('outcomesPieChart').getContext('2d');
+
+    // Radar Chart
+    new Chart(radarCtx, {
+      type: 'radar',
+      data: {
+        labels: ['Age Risk', 'BMI Impact', 'Genetic Factor', 'Lifestyle', 'Diabetes Control', 'Screening Frequency'],
+        datasets: [{
+          label: 'With Diabetes',
+          data: [80, 70, 65, 75, 85, 60],
+          borderColor: '#9f1ae2',
+          backgroundColor: 'rgba(159, 26, 226, 0.2)'
+        }, {
+          label: 'Without Diabetes',
+          data: [60, 50, 55, 65, 50, 70],
+          borderColor: '#2937f0',
+          backgroundColor: 'rgba(41, 55, 240, 0.2)'
+        }]
+      },
+      options: {
+        scales: {
+          r: {
+            angleLines: {
+              color: 'rgba(255, 255, 255, 0.1)'
+            },
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)'
+            },
+            pointLabels: {
+              color: '#fff'
+            },
+            ticks: {
+              color: '#fff',
+              backdropColor: 'transparent'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: { color: '#fff' }
+          }
+        }
+      }
+    });
+
+    // Doughnut Chart
+    new Chart(pieCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Positive Outcomes', 'Ongoing Treatment', 'Requires Monitoring', 'High Risk'],
+        datasets: [{
+          data: [45, 25, 20, 10],
+          backgroundColor: [
+            'rgba(40, 167, 69, 0.8)',
+            'rgba(255, 193, 7, 0.8)',
+            'rgba(23, 162, 184, 0.8)',
+            'rgba(220, 53, 69, 0.8)'
+          ],
+          borderColor: 'rgba(255, 255, 255, 0.1)'
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: '#fff' }
+          }
+        }
+      }
+    });
+
+    // Enhanced Risk Calculator
+    function updateRisk() {
+      const age = parseInt(document.getElementById('ageInput').value);
+      const diabetesYears = parseInt(document.getElementById('diabetesYearsInput').value);
+      const bmi = parseFloat(document.getElementById('bmiInput').value);
+      const hasHistory = document.getElementById('familyHistoryInput').checked;
+      
+      // Calculate age-related risk (higher risk after 50, increases with age)
+      let ageRisk = 0;
+      if (age > 50) {
+        ageRisk = ((age - 50) * 0.04); // 4% increase per year after 50
+      }
+      
+      // Calculate diabetes duration risk (increases with years, but plateaus)
+      const diabetesRisk = Math.min(diabetesYears * 0.08, 1.0); // 8% per year, max 100%
+      
+      // Calculate BMI risk (increases exponentially for higher BMI)
+      let bmiRisk = 0;
+      if (bmi < 18.5) {
+        bmiRisk = 0.1; // Underweight has slight risk
+      } else if (bmi >= 25 && bmi < 30) {
+        bmiRisk = 0.2; // Overweight
+      } else if (bmi >= 30) {
+        bmiRisk = 0.3 + ((bmi - 30) * 0.05); // Obese with increasing risk
+      }
+      
+      // Family history adds significant risk
+      const historyRisk = hasHistory ? 0.5 : 0;
+      
+      // Calculate total risk with weighted factors
+      const baseRisk = 1.0;
+      let totalRisk = baseRisk + (ageRisk * 1.2) + (diabetesRisk * 1.5) + (bmiRisk * 1.3) + (historyRisk * 1.4);
+      
+      // Round to one decimal place
+      totalRisk = Math.round(totalRisk * 10) / 10;
+      
+      // Update risk display
+      const riskCircle = document.getElementById('riskDisplay');
+      const riskValue = document.querySelector('.risk-value');
+      const riskLabel = document.querySelector('.risk-label');
+      
+      // Update circle size based on risk (with limits)
+      const scale = Math.min(1 + ((totalRisk - 1) * 0.15), 1.5);
+      riskCircle.style.transform = `scale(${scale})`;
+      
+      // Update risk value
+      riskValue.textContent = `${totalRisk}x`;
+      
+      // Update risk label and color based on total risk
+      if (totalRisk < 1.5) {
+        riskLabel.textContent = 'Low Risk';
+        riskLabel.style.color = '#28a745';
+        riskCircle.style.background = 'linear-gradient(45deg, #28a745, #34ce57)';
+      } else if (totalRisk < 2.5) {
+        riskLabel.textContent = 'Moderate Risk';
+        riskLabel.style.color = '#ffc107';
+        riskCircle.style.background = 'linear-gradient(45deg, #ffc107, #ffdb4a)';
+      } else if (totalRisk < 3.5) {
+        riskLabel.textContent = 'High Risk';
+        riskLabel.style.color = '#dc3545';
+        riskCircle.style.background = 'linear-gradient(45deg, #dc3545, #ff4d5e)';
+      } else {
+        riskLabel.textContent = 'Very High Risk';
+        riskLabel.style.color = '#dc3545';
+        riskCircle.style.background = 'linear-gradient(45deg, #c82333, #dc3545)';
+      }
+      
+      // Update risk factors list
+      const factorsList = document.getElementById('riskFactorsList');
+      factorsList.innerHTML = '';
+      
+      // Add individual risk factors with more detailed descriptions
+      if (ageRisk > 0) {
+        addRiskFactor('Age-related risk', ageRisk, 
+          `Age ${age} contributes ${Math.round(ageRisk * 100)}% increased risk`);
+      }
+      
+      if (diabetesRisk > 0) {
+        addRiskFactor('Diabetes duration impact', diabetesRisk,
+          `${diabetesYears} years with diabetes adds ${Math.round(diabetesRisk * 100)}% risk`);
+      }
+      
+      if (bmiRisk > 0) {
+        addRiskFactor('BMI-related risk', bmiRisk,
+          `BMI of ${bmi} contributes ${Math.round(bmiRisk * 100)}% increased risk`);
+      }
+      
+      if (historyRisk > 0) {
+        addRiskFactor('Family history impact', historyRisk,
+          'Family history adds 50% to baseline risk');
+      }
+    }
+
+    // Enhanced risk factor display
+    function addRiskFactor(label, value, description) {
+      const factorsList = document.getElementById('riskFactorsList');
+      const li = document.createElement('li');
+      li.className = 'mb-3';
+      li.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <span>${label}</span>
+          <span class="badge bg-primary">+${Math.round(value * 100)}%</span>
+        </div>
+        <small class="text-muted">${description}</small>
+      `;
+      factorsList.appendChild(li);
+    }
+
+    // Add tooltips to explain risk factors
+    const tooltips = {
+      age: 'Risk increases significantly after age 50',
+      diabetes: 'Longer duration of diabetes increases risk',
+      bmi: 'BMI over 25 increases risk, with higher risk for BMI over 30',
+      history: 'Family history of breast cancer significantly increases risk'
+    };
+
+    // Initialize tooltips
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(element => {
+      new bootstrap.Tooltip(element);
+    });
+
+    // Scroll reveal animation
+    function reveal() {
+      const reveals = document.querySelectorAll('.reveal');
+      
+      reveals.forEach(element => {
+        const windowHeight = window.innerHeight;
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          element.classList.add('active');
+        }
+      });
+    }
+
+    // Chart reveal animation
+    function revealCharts() {
+      const charts = document.querySelectorAll('.chart-container');
+      
+      charts.forEach(chart => {
+        const windowHeight = window.innerHeight;
+        const chartTop = chart.getBoundingClientRect().top;
+        const chartVisible = 150;
+        
+        if (chartTop < windowHeight - chartVisible) {
+          chart.classList.add('active');
+        }
+      });
+    }
+
+    // Add scroll event listeners
+    window.addEventListener('scroll', reveal);
+    window.addEventListener('scroll', revealCharts);
+
+    // Initial check
+    reveal();
+    revealCharts();
+
+    // Initialize risk trend chart
+    const trendCtx = document.getElementById('riskTrendChart').getContext('2d');
+    new Chart(trendCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Overall Risk Score',
+          data: [1.2, 1.5, 1.8, 2.1, 2.4, 2.7],
+          borderColor: '#dc3545',
+          tension: 0.4,
+          fill: false
+        }, {
+          label: 'Diabetes Risk',
+          data: [1.0, 1.3, 1.6, 1.9, 2.2, 2.5],
+          borderColor: '#ffc107',
+          tension: 0.4,
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: { color: '#fff' }
+          },
+          title: {
+            display: true,
+            text: '6-Month Risk Trend',
+            color: '#fff',
+            font: { size: 16 }
+          }
+        },
+        scales: {
+          y: {
+            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+            ticks: { color: '#fff' }
+          },
+          x: {
+            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+            ticks: { color: '#fff' }
+          }
+        }
+      }
+    });
+    </script>
+  </body>
+</html> 

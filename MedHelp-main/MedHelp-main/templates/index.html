@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="en" id="html" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Multi Pred | Home</title>
+    <link rel="icon" href="/MedHelp-main/logo.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <style>
+      /* Enhanced base styles */
+      :root {
+        --primary-gradient: linear-gradient(45deg, #2937f0, #9f1ae2);
+        --hover-gradient: linear-gradient(45deg, #9f1ae2, #2937f0);
+        --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #0c0c1e, #1a1a3c);
+        color: #fff;
+      }
+
+      /* Enhanced navbar styles */
+      .navbar {
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+        background: rgba(12, 12, 30, 0.8) !important;
+      }
+
+      .navbar-brand {
+        font-weight: 600;
+        font-size: 1.5rem;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* Hero section styles */
+      .hero-section {
+        position: relative;
+        padding: 8rem 0;
+        background: url("/MedHelp-main/hero-pattern.svg");
+        background-size: cover;
+        overflow: hidden;
+      }
+
+      .hero-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          rgba(41, 55, 240, 0.2),
+          rgba(159, 26, 226, 0.2)
+        );
+        backdrop-filter: blur(5px);
+      }
+
+      .hero-section .container {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        color: var(--bs-secondary);
+      }
+
+      /* Enhanced card styles */
+      .feature-card {
+        border: none;
+        border-radius: 20px;
+        transition: var(--transition);
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(10px);
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .feature-card img {
+        transition: var(--transition);
+        object-fit: cover;
+      }
+
+      .feature-card:hover img {
+        transform: scale(1.05);
+      }
+
+      .feature-card .card-title {
+        font-weight: 600;
+        margin: 1.5rem 0;
+      }
+
+      .feature-card .btn-primary {
+        background: var(--primary-gradient);
+        border: none;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: 500;
+        transition: var(--transition);
+      }
+
+      .feature-card .btn-primary:hover {
+        background: var(--hover-gradient);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(41, 55, 240, 0.3);
+      }
+
+      /* Stats section */
+      .stats-section {
+        padding: 4rem 0;
+        background: linear-gradient(
+          135deg,
+          rgba(41, 55, 240, 0.05),
+          rgba(159, 26, 226, 0.05)
+        );
+        margin: 4rem 0;
+      }
+
+      .stat-card {
+        text-align: center;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        transform: rotate(45deg);
+        animation: shine 3s infinite;
+      }
+
+      @keyframes shine {
+        0% {
+          transform: translateX(-100%) rotate(45deg);
+        }
+        100% {
+          transform: translateX(100%) rotate(45deg);
+        }
+      }
+
+      .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* Enhanced footer */
+      footer {
+        background: linear-gradient(135deg, #0c0c1e, #1a1a3c);
+        padding: 4rem 0 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .footer-quote {
+        font-style: italic;
+        font-size: 1.2rem;
+        padding: 2rem;
+        border-left: 4px solid #9f1ae2;
+        margin-bottom: 3rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Social links animation */
+      .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        margin: 0 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .social-link:hover {
+        transform: translateY(-5px);
+        background: var(--primary-gradient);
+      }
+
+      /* Navbar enhancements */
+      .dropdown-menu {
+        background: rgba(26, 26, 60, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .dropdown-item {
+        color: #fff;
+      }
+
+      .dropdown-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+
+      /* Floating animation for hero image */
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      .hero-image {
+        animation: float 6s ease-in-out infinite;
+        border-radius: 20px;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Animated stats */
+      .stat-number[data-value] {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stat-number[data-value]::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        transform: rotate(45deg);
+        animation: shine 3s infinite;
+      }
+
+      @keyframes shine {
+        0% {
+          transform: translateX(-100%) rotate(45deg);
+        }
+        100% {
+          transform: translateX(100%) rotate(45deg);
+        }
+      }
+
+      /* Animated background for sections */
+      .features-section {
+        position: relative;
+        background: linear-gradient(
+          135deg,
+          rgba(41, 55, 240, 0.05),
+          rgba(159, 26, 226, 0.05)
+        );
+      }
+
+      .features-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("/MedHelp-main/grid-pattern.svg");
+        opacity: 0.1;
+        animation: backgroundMove 20s linear infinite;
+      }
+
+      @keyframes backgroundMove {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 100% 100%;
+        }
+      }
+
+      /* Enhanced Why It Matters section */
+      .why-matters-section {
+        background: linear-gradient(135deg, #1a1a3c, #0c0c1e);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .why-matters-section::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(41, 55, 240, 0.1),
+          transparent
+        );
+      }
+
+      /* Enhanced list items */
+      .feature-list-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+      }
+
+      .feature-list-item:hover {
+        transform: translateX(10px);
+      }
+
+      .feature-list-item i {
+        margin-right: 1rem;
+        color: #9f1ae2;
+        font-size: 1.5rem;
+      }
+
+      /* Enhanced animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-100px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(100px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes gradientBG {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* Animated background */
+      .hero-section {
+        background: linear-gradient(-45deg, #0c0c1e, #1a1a3c, #2937f0, #9f1ae2);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+      }
+
+      /* Hero content animations */
+      .hero-title {
+        animation: slideInLeft 1s ease-out;
+      }
+
+      .hero-subtitle {
+        animation: slideInLeft 1s ease-out 0.3s backwards;
+      }
+
+      .hero-section .btn {
+        animation: fadeInUp 1s ease-out 0.6s backwards;
+      }
+
+      .hero-image {
+        animation: slideInRight 1s ease-out, float 6s ease-in-out infinite;
+      }
+
+      /* Feature card hover effects */
+      .feature-card {
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+
+      .feature-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        opacity: 0;
+        box-shadow: 0 15px 45px rgba(41, 55, 240, 0.3);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+
+      .feature-card:hover::after {
+        opacity: 1;
+      }
+
+      .feature-card .btn {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card .btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: 0.5s;
+      }
+
+      .feature-card .btn:hover::before {
+        left: 100%;
+      }
+
+      /* Stats animation */
+      .stat-card {
+        transform: translateY(50px);
+        opacity: 0;
+        animation: fadeInUp 0.8s ease-out forwards;
+      }
+
+      .stat-card:nth-child(1) {
+        animation-delay: 0.2s;
+      }
+      .stat-card:nth-child(2) {
+        animation-delay: 0.4s;
+      }
+      .stat-card:nth-child(3) {
+        animation-delay: 0.6s;
+      }
+
+      /* Navbar animation */
+      .navbar {
+        animation: fadeInDown 0.8s ease-out;
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Scroll reveal animation */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Animated underline for links */
+      .nav-link {
+        position: relative;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(90deg, #2937f0, #9f1ae2);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* Pulse animation for CTA buttons */
+      .btn-primary {
+        animation: pulse 2s infinite;
+      }
+
+      /* Animated social icons */
+      .social-link {
+        transition: all 0.3s ease;
+      }
+
+      .social-link:hover {
+        transform: translateY(-5px) rotate(360deg);
+      }
+
+      .health-tips-section {
+        background: linear-gradient(
+          135deg,
+          rgba(41, 55, 240, 0.05),
+          rgba(159, 26, 226, 0.05)
+        );
+        position: relative;
+        padding: 5rem 0;
+      }
+
+      .tip-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2rem;
+        height: 100%;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tip-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .tip-icon {
+        width: 60px;
+        height: 60px;
+        background: var(--primary-gradient);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 1.5rem;
+        color: white;
+      }
+
+      .tip-card h4 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .tip-content {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        transition: var(--transition);
+      }
+
+      .tip-card:hover .tip-content {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      @keyframes tipRefresh {
+        0% {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .tip-refresh {
+        animation: tipRefresh 0.5s ease-out;
+      }
+
+      .news-section {
+        background: linear-gradient(
+          135deg,
+          rgba(41, 55, 240, 0.05),
+          rgba(159, 26, 226, 0.05)
+        );
+        position: relative;
+        padding: 5rem 0;
+      }
+
+      .news-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: var(--transition);
+        height: 100%;
+        animation: fadeInUp 0.5s ease-out forwards;
+      }
+
+      .news-card:hover {
+        transform: translateY(-10px);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .news-image {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .news-image img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .news-card:hover .news-image img {
+        transform: scale(1.1);
+      }
+
+      .news-date {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: var(--primary-gradient);
+        padding: 10px;
+        border-radius: 10px;
+        text-align: center;
+        color: white;
+      }
+
+      .news-date .day {
+        font-size: 1.5rem;
+        font-weight: 700;
+        display: block;
+        line-height: 1;
+      }
+
+      .news-date .month {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+      }
+
+      .news-content {
+        padding: 1.5rem;
+      }
+
+      .news-category {
+        display: inline-block;
+        padding: 5px 15px;
+        background: var(--primary-gradient);
+        border-radius: 20px;
+        color: white;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+      }
+
+      .news-content h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .news-content p {
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 1rem;
+      }
+
+      .read-more {
+        color: #9f1ae2;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        transition: var(--transition);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        background: rgba(159, 26, 226, 0.1);
+        cursor: pointer;
+      }
+
+      .read-more:hover {
+        color: #fff;
+        background: var(--primary-gradient);
+        transform: translateX(5px);
+      }
+
+      .read-more i {
+        font-size: 0.8rem;
+        transition: transform 0.3s ease;
+      }
+
+      .read-more:hover i {
+        transform: translateX(3px);
+      }
+
+      .news-card {
+        position: relative;
+      }
+
+      .news-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 20px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        background: linear-gradient(
+          to top,
+          rgba(41, 55, 240, 0.1),
+          transparent
+        );
+      }
+
+      .news-card:hover::after {
+        opacity: 1;
+      }
+
+      .news-navigation {
+        text-align: center;
+      }
+
+      .load-more {
+        background: var(--primary-gradient);
+        border: none;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: 500;
+        transition: var(--transition);
+      }
+
+      .load-more:hover {
+        background: var(--hover-gradient);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(41, 55, 240, 0.3);
+      }
+
+      @keyframes newsSlide {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .news-card {
+        opacity: 0;
+        animation: newsSlide 0.5s ease-out forwards;
+      }
+
+      .news-card:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .news-card:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .news-card:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+
+      .modal-content {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .form-floating > .form-control {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+
+      .form-floating > .form-control:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 0 0.25rem rgba(41, 55, 240, 0.25);
+      }
+
+      .form-floating > label {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .form-floating > .form-control:focus ~ label {
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .btn-outline-light:hover {
+        background: var(--primary-gradient);
+        border-color: transparent;
+      }
+
+      .social-login .btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .social-login .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      /* Provider-specific colors on hover */
+      .social-login .btn:hover i.fa-google {
+        color: #db4437;
+      }
+
+      .social-login .btn:hover i.fa-facebook {
+        color: #4267b2;
+      }
+
+      .social-login .btn:hover i.fa-apple {
+        color: #a2aaad;
+      }
+
+      .social-login .btn:hover i.fa-microsoft {
+        color: #00a4ef;
+      }
+
+      .social-login .btn:hover i.fa-github {
+        color: #333;
+      }
+
+      .social-login .btn:hover i.fa-twitter {
+        color: #1da1f2;
+      }
+
+      /* Ripple effect */
+      .social-login .btn::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 5px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.5);
+        opacity: 0;
+        border-radius: 100%;
+        transform: scale(1, 1) translate(-50%);
+        transform-origin: 50% 50%;
+      }
+
+      .social-login .btn:focus:not(:active)::after {
+        animation: ripple 1s ease-out;
+      }
+
+      @keyframes ripple {
+        0% {
+          transform: scale(0, 0);
+          opacity: 1;
+        }
+        20% {
+          transform: scale(25, 25);
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: scale(40, 40);
+        }
+      }
+
+      .nav-item .btn {
+        transition: all 0.3s ease;
+      }
+
+      .nav-item .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .nav-item .btn-outline-light:hover {
+        background: var(--primary-gradient);
+        border-color: transparent;
+      }
+
+      .nav-item .btn-primary {
+        background: var(--primary-gradient);
+        border: none;
+      }
+
+      .nav-item .btn-primary:hover {
+        background: var(--hover-gradient);
+        box-shadow: 0 5px 15px rgba(41, 55, 240, 0.3);
+      }
+    </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var elem = document.documentElement;
+        var mod = document.getElementById("modeimg");
+        var email = document.getElementById("email-logo");
+        var github = document.getElementById("github-logo");
+        var linkedin = document.getElementById("linkedin-logo");
+
+        var userPreference = localStorage.getItem("modePreference");
+
+        if (userPreference) {
+          elem.dataset.bsTheme = userPreference;
+          mod.src =
+            elem.dataset.bsTheme === "light"
+              ? "/MedHelp-main/image1.jpg "
+              : "/MedHelp-main/dark.png";
+          mod.alt = elem.dataset.bsTheme === "light" ? "Light" : "Dark";
+          email.src =
+            elem.dataset.bsTheme === "dark"
+              ? "/MedHelp-main/email-l.png"
+              : "/MedHelp-main/email.png";
+          github.src =
+            elem.dataset.bsTheme === "dark"
+              ? "/MedHelp-main/github-l.png"
+              : "/MedHelp-main/github.png";
+          linkedin.src =
+            elem.dataset.bsTheme === "dark"
+              ? "/MedHelp-main/linkedin-l.png"
+              : "/MedHelp-main/linkedin.png";
+        }
+      });
+
+      function toggleTheme() {
+        var elem = document.documentElement;
+        var mod = document.getElementById("modeimg");
+        var email = document.getElementById("email-logo");
+        var github = document.getElementById("github-logo");
+        var linkedin = document.getElementById("linkedin-logo");
+
+        elem.dataset.bsTheme =
+          elem.dataset.bsTheme === "light" ? "dark" : "light";
+        mod.src =
+          elem.dataset.bsTheme === "light"
+            ? "/MedHelp-main/light.svg"
+            : "/MedHelp-main/dark.png";
+        mod.alt = elem.dataset.bsTheme === "light" ? "Light" : "Dark";
+        email.src =
+          elem.dataset.bsTheme === "dark"
+            ? "/MedHelp-main/email-l.png"
+            : "/MedHelp-main/email.png";
+        github.src =
+          elem.dataset.bsTheme === "dark"
+            ? "/MedHelp-main/github-l.png"
+            : "/MedHelp-main/github.png";
+        linkedin.src =
+          elem.dataset.bsTheme === "dark"
+            ? "/MedHelp-main/linkedin-l.png"
+            : "/MedHelp-main/linkedin.png";
+
+        localStorage.setItem("modePreference", elem.dataset.bsTheme);
+      }
+    </script>
+  </head>
+  <body>
+    <nav class="navbar p-1 sticky-top navbar-expand-lg bg-body-secondary">
+      <div class="container-fluid">
+        <a href="/">
+          <img
+            src="/MedHelp-main/logo.png"
+            width="30"
+            height="30"
+            alt="logo"
+            id="logo"
+            role="button"
+            style="margin-right: 15px"
+          />
+        </a>
+
+        <a class="navbar-brand" href="index.html">Multi Pred</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div id="options">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="index.html"
+                  >Home</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html">About</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center"
+                  href="dashboard.html"
+                >
+                  <i class="fas fa-chart-line me-1"></i>
+                  Dashboard
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Features
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="diabetes.html"
+                      >Diabetes Prediction</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="Breastcancer.html"
+                      >Breast Cancer Prediction</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="bmi.html">BMI Calculator</a>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item" href="research-insights.html"
+                      >What are we choosing this topic?</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div class="d-flex align-items-center ms-auto">
+            <div class="d-flex flex-row justify-content-center align-items-center me-3" id="themeselect">
+              <img src="/MedHelp-main/dark.png" alt="Dark" id="modeimg" height="18px" onclick="toggleTheme()" style="cursor: pointer"/>
+            </div>
+            
+            <div class="d-flex align-items-center gap-2">
+              <a href="login.html" class="btn btn-outline-light btn-sm">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+              </a>
+              <a href="signup.html" class="btn btn-primary btn-sm">
+                <i class="fas fa-user-plus me-2"></i>Sign Up
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <main>
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6">
+              <h1 class="hero-title display-3 mb-4">
+                Transform Your Health Journey
+              </h1>
+              <p class="hero-subtitle lead mb-5">
+                Harness the power of AI and advanced analytics to make informed
+                decisions about your health. Get personalized predictions and
+                insights tailored just for you.
+              </p>
+              <div class="d-flex gap-3">
+                <a href="#features" class="btn btn-primary btn-lg">
+                  Explore Features
+                </a>
+                <a href="about.html" class="btn btn-outline-light btn-lg">
+                  Learn More
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <img
+                src="/MedHelp-main/hero-image.jpg"
+                alt="Healthcare"
+                class="img-fluid hero-image"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats Section -->
+      <section class="stats-section">
+        <div class="container">
+          <div class="row g-4">
+            <div class="col-md-4">
+              <div class="stat-card">
+                <div class="stat-number" data-value="98">0%</div>
+                <p class="text-light">Prediction Accuracy</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stat-card">
+                <div class="stat-number" data-value="10000">0+</div>
+                <p class="text-light">Users Helped</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <p class="text-light">Available Support</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section id="features" class="features-section py-5">
+        <div class="container">
+          <h2 class="text-center mb-5">Our Features</h2>
+          <div class="row g-4">
+            <!-- Diabetes Prediction Card -->
+            <div class="col-lg-4">
+              <div class="feature-card card h-100">
+                <div class="overflow-hidden">
+                  <img
+                    src="/MedHelp-main/db.png"
+                    class="card-img-top"
+                    alt="Diabetes Prediction"
+                  />
+                </div>
+                <div class="card-body text-center">
+                  <h3 class="card-title">Diabetes Prediction</h3>
+                  <p class="card-text">
+                    Advanced ML algorithms analyze your health data to assess
+                    diabetes risk with high accuracy.
+                  </p>
+                  <a href="diabetes.html" class="btn btn-primary">
+                    Start Analysis
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Breast Cancer Prediction Card -->
+            <div class="col-lg-4">
+              <div class="feature-card card h-100">
+                <div class="overflow-hidden">
+                  <img
+                    src="/MedHelp-main/heart.jpg"
+                    class="card-img-top"
+                    alt="Breast Cancer Prediction"
+                  />
+                </div>
+                <div class="card-body text-center">
+                  <h3 class="card-title">Breast Cancer Prediction</h3>
+                  <p class="card-text">
+                    Machine Learning utilizes data analysis and predictive
+                    algorithms to assess breast cancer risk.
+                  </p>
+                  <a href="Breastcancer.html" class="btn btn-primary">
+                    Start Analysis
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- BMI Calculator Card -->
+            <div class="col-lg-4">
+              <div class="feature-card card h-100">
+                <div class="overflow-hidden">
+                  <img
+                    src="/MedHelp-main/bmi.png"
+                    class="card-img-top"
+                    alt="BMI Calculator"
+                  />
+                </div>
+                <div class="card-body text-center">
+                  <h3 class="card-title">BMI Calculator</h3>
+                  <p class="card-text">
+                    Calculate your Body Mass Index to assess your body weight
+                    and health status.
+                  </p>
+                  <a href="bmi.html" class="btn btn-primary"> Calculate Now </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Health Tips Section -->
+      <section class="health-tips-section py-5">
+        <div class="container">
+          <h2 class="text-center mb-5">Daily Health Tips</h2>
+          <div class="row g-4">
+            <!-- Nutrition Tips -->
+            <div class="col-lg-4">
+              <div class="tip-card">
+                <div class="tip-icon">
+                  <i class="fas fa-apple-alt"></i>
+                </div>
+                <h4>Nutrition Tips</h4>
+                <div class="tip-content" id="nutrition-tip">
+                  Loading today's nutrition tip...
+                </div>
+                <button
+                  class="btn btn-outline-primary mt-3"
+                  onclick="refreshTip('nutrition')"
+                >
+                  New Tip
+                </button>
+              </div>
+            </div>
+
+            <!-- Exercise Tips -->
+            <div class="col-lg-4">
+              <div class="tip-card">
+                <div class="tip-icon">
+                  <i class="fas fa-running"></i>
+                </div>
+                <h4>Exercise Tips</h4>
+                <div class="tip-content" id="exercise-tip">
+                  Loading today's exercise tip...
+                </div>
+                <button
+                  class="btn btn-outline-primary mt-3"
+                  onclick="refreshTip('exercise')"
+                >
+                  New Tip
+                </button>
+              </div>
+            </div>
+
+            <!-- Mental Health Tips -->
+            <div class="col-lg-4">
+              <div class="tip-card">
+                <div class="tip-icon">
+                  <i class="fas fa-brain"></i>
+                </div>
+                <h4>Mental Health Tips</h4>
+                <div class="tip-content" id="mental-tip">
+                  Loading today's mental health tip...
+                </div>
+                <button
+                  class="btn btn-outline-primary mt-3"
+                  onclick="refreshTip('mental')"
+                >
+                  New Tip
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Health News Feed Section -->
+      <section class="news-section py-5">
+        <div class="container">
+          <h2 class="text-center mb-5">Latest Health News</h2>
+          <div class="news-carousel">
+            <div class="row g-4">
+              <!-- News Cards -->
+              <div class="col-lg-4 col-md-6">
+                <div class="news-card">
+                  <div class="news-image">
+                    <img src="/MedHelp-main/news1.jpg" class="img-fluid" />
+                    <div class="news-date">
+                      <span class="day">23</span>
+                      <span class="month">Dec</span>
+                    </div>
+                  </div>
+                  <div class="news-content">
+                    <div class="news-category">Research</div>
+                    <h3>New Breakthroughs in Diabetes Treatment</h3>
+                    <p>
+                      Recent studies show promising results in treating type 2
+                      diabetes with innovative approaches...
+                    </p>
+                    <a
+                      href="https://www.who.int/news-room/fact-sheets/detail/diabetes"
+                      class="read-more"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Read More
+                      <i class="fas fa-external-link-alt ms-2"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-6">
+                <div class="news-card">
+                  <div class="news-image">
+                    <img src="/MedHelp-main/news2.jpg" class="img-fluid" />
+                    <div class="news-date">
+                      <span class="day">22</span>
+                      <span class="month">Dec</span>
+                    </div>
+                  </div>
+                  <div class="news-content">
+                    <div class="news-category">Wellness</div>
+                    <h3>Understanding Mental Health in Modern Times</h3>
+                    <p>
+                      Expert insights on maintaining mental wellness in today's
+                      fast-paced world...
+                    </p>
+                    <a
+                      href="https://www.who.int/news-room/fact-sheets/detail/mental-health-strengthening-our-response"
+                      class="read-more"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Read More
+                      <i class="fas fa-external-link-alt ms-2"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-md-6">
+                <div class="news-card">
+                  <div class="news-image">
+                    <img src="/MedHelp-main/news3.jpg" class="img-fluid" />
+                    <div class="news-date">
+                      <span class="day">21</span>
+                      <span class="month">Dec</span>
+                    </div>
+                  </div>
+                  <div class="news-content">
+                    <div class="news-category">Prevention</div>
+                    <h3>Early Detection of Breast Cancer</h3>
+                    <p>
+                      New guidelines for breast cancer screening and prevention
+                      strategies...
+                    </p>
+                    <a
+                      href="https://www.who.int/news-room/fact-sheets/detail/breast-cancer"
+                      class="read-more"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Read More
+                      <i class="fas fa-external-link-alt ms-2"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- News Navigation -->
+            <div class="news-navigation mt-4">
+              <button class="load-more btn btn-primary">Load More News</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why It Matters Section -->
+      <section class="why-matters-section py-5 bg-light">
+        <div class="container">
+          <h2 class="text-center mb-4">Why This Matters</h2>
+          <div class="row align-items-center">
+            <div class="col-lg-6">
+              <img
+                src="/MedHelp-main/why-matters.jpg"
+                alt="Healthcare importance"
+                class="img-fluid rounded-4 shadow"
+              />
+            </div>
+            <div class="col-lg-6">
+              <p class="lead">
+                Understanding the connection between different health conditions
+                is crucial for prevention and early intervention. Our platform
+                helps you:
+              </p>
+              <ul class="list-unstyled">
+                <li class="mb-3">✓ Identify potential health risks early</li>
+                <li class="mb-3">
+                  ✓ Make informed decisions about your health
+                </li>
+                <li class="mb-3">✓ Track your health metrics effectively</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <blockquote class="footer-quote text-center">
+              "Health is the greatest possession. Contentment is the greatest
+              treasure. Confidence is the greatest friend"
+              <footer class="blockquote-footer mt-2">Albert Schweitzer</footer>
+            </blockquote>
+          </div>
+        </div>
+
+        <div class="social-links text-center mb-4">
+          <!-- Social links with enhanced styling -->
+          <!-- ... existing social links ... -->
+        </div>
+
+        <div class="text-center py-3">
+          <p class="mb-0">Made with ❤️ by Group 79</p>
+        </div>
+      </div>
+    </footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      // Animate stats numbers
+      const stats = document.querySelectorAll(".stat-number[data-value]");
+
+      stats.forEach((stat) => {
+        const value = parseInt(stat.dataset.value);
+        let current = 0;
+        const increment = value / 50;
+        const updateCount = () => {
+          if (current < value) {
+            current += increment;
+            stat.textContent =
+              Math.round(current) +
+              (stat.dataset.value.includes("+") ? "+" : "%");
+            requestAnimationFrame(updateCount);
+          } else {
+            stat.textContent =
+              value + (stat.dataset.value.includes("+") ? "+" : "%");
+          }
+        };
+        updateCount();
+      });
+
+      // Intersection Observer for animations
+      const observerOptions = {
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate");
+          }
+        });
+      }, observerOptions);
+
+      document
+        .querySelectorAll(".feature-card, .stat-card, .feature-list-item")
+        .forEach((el) => {
+          observer.observe(el);
+        });
+
+      // Scroll reveal animation
+      function reveal() {
+        const reveals = document.querySelectorAll(".reveal");
+
+        reveals.forEach((element) => {
+          const windowHeight = window.innerHeight;
+          const elementTop = element.getBoundingClientRect().top;
+          const elementVisible = 150;
+
+          if (elementTop < windowHeight - elementVisible) {
+            element.classList.add("active");
+          }
+        });
+      }
+
+      window.addEventListener("scroll", reveal);
+
+      // Add reveal class to elements
+      document
+        .querySelectorAll(
+          ".feature-card, .stat-card, .why-matters-section, .footer-quote"
+        )
+        .forEach((el) => {
+          el.classList.add("reveal");
+        });
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
+
+      // Parallax effect for hero section
+      window.addEventListener("scroll", function () {
+        const scrolled = window.pageYOffset;
+        const parallax = document.querySelector(".hero-section");
+        parallax.style.transform = "translateY(" + scrolled * 0.3 + "px)";
+      });
+
+      // Animated counter for stats
+      const animateValue = (obj, start, end, duration) => {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+          if (!startTimestamp) startTimestamp = timestamp;
+          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+          obj.innerHTML =
+            Math.floor(progress * (end - start) + start) +
+            (obj.dataset.value.includes("+") ? "+" : "%");
+          if (progress < 1) {
+            window.requestAnimationFrame(step);
+          }
+        };
+        window.requestAnimationFrame(step);
+      };
+
+      // Enhanced stats animation
+      const observerCallback = (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const stat = entry.target;
+            const value = parseInt(stat.dataset.value);
+            animateValue(stat, 0, value, 2000);
+            observer.unobserve(stat);
+          }
+        });
+      };
+
+      const statsObserver = new IntersectionObserver(observerCallback, {
+        threshold: 0.5,
+      });
+
+      document.querySelectorAll(".stat-number[data-value]").forEach((stat) => {
+        statsObserver.observe(stat);
+      });
+
+      // Health tips data
+      const healthTips = {
+        nutrition: [
+          "Eat a rainbow of fruits and vegetables daily for diverse nutrients",
+          "Stay hydrated! Drink at least 8 glasses of water per day",
+          "Include protein-rich foods in every meal for sustained energy",
+          "Choose whole grains over refined grains for better nutrition",
+          "Limit processed foods and added sugars in your diet",
+          "Include healthy fats like avocados and nuts in your meals",
+          "Practice portion control using the plate method",
+        ],
+        exercise: [
+          "Aim for 30 minutes of moderate exercise daily",
+          "Take the stairs instead of the elevator when possible",
+          "Include both cardio and strength training in your routine",
+          "Start your day with simple stretching exercises",
+          "Take short walking breaks during work hours",
+          "Try high-intensity interval training for efficient workouts",
+          "Practice yoga for flexibility and stress relief",
+        ],
+        mental: [
+          "Practice mindfulness meditation for 10 minutes daily",
+          "Take regular breaks from screen time",
+          "Maintain a consistent sleep schedule",
+          "Connect with loved ones regularly",
+          "Practice gratitude by listing three good things daily",
+          "Set boundaries between work and personal life",
+          "Spend time in nature to boost mood",
+        ],
+      };
+
+      // Function to get a random tip
+      function getRandomTip(category) {
+        const tips = healthTips[category];
+        return tips[Math.floor(Math.random() * tips.length)];
+      }
+
+      // Function to refresh tip
+      function refreshTip(category) {
+        const tipElement = document.getElementById(`${category}-tip`);
+        tipElement.style.opacity = "0";
+
+        setTimeout(() => {
+          tipElement.textContent = getRandomTip(category);
+          tipElement.style.opacity = "1";
+          tipElement.classList.add("tip-refresh");
+        }, 200);
+
+        setTimeout(() => {
+          tipElement.classList.remove("tip-refresh");
+        }, 700);
+      }
+
+      // Initialize tips
+      document.addEventListener("DOMContentLoaded", function () {
+        refreshTip("nutrition");
+        refreshTip("exercise");
+        refreshTip("mental");
+      });
+
+      // Auto refresh tips every 24 hours
+      setInterval(() => {
+        refreshTip("nutrition");
+        refreshTip("exercise");
+        refreshTip("mental");
+      }, 24 * 60 * 60 * 1000);
+
+      // News Feed Functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const loadMoreBtn = document.querySelector(".load-more");
+        let currentPage = 1;
+
+        const additionalNews = [
+          {
+            image: "/MedHelp-main/news4.jpg",
+            date: { day: "20", month: "Dec" },
+            category: "Lifestyle",
+            title: "Healthy Living in 2024",
+            excerpt:
+              "Tips and strategies for maintaining a healthy lifestyle...",
+            link: "https://www.who.int/news-room/fact-sheets/detail/healthy-diet",
+          },
+          {
+            image: "/MedHelp-main/news5.jpg",
+            date: { day: "19", month: "Dec" },
+            category: "Research",
+            title: "Advances in Medical Technology",
+            excerpt:
+              "Latest developments in healthcare technology and treatments...",
+            link: "https://www.who.int/health-topics/digital-health",
+          },
+          {
+            image: "/MedHelp-main/news6.jpg",
+            date: { day: "18", month: "Dec" },
+            category: "Prevention",
+            title: "Understanding Preventive Healthcare",
+            excerpt: "Key strategies for preventing common health issues...",
+            link: "https://www.who.int/health-topics/preventive-healthcare",
+          },
+        ];
+
+        loadMoreBtn.addEventListener("click", function () {
+          loadMoreBtn.innerHTML = "Loading...";
+
+          setTimeout(() => {
+            const newsContainer = document.querySelector(".news-carousel .row");
+            const newsIndex = (currentPage - 1) % additionalNews.length;
+            const newNews = createNewsCard(additionalNews[newsIndex]);
+
+            newsContainer.appendChild(newNews);
+            currentPage++;
+
+            if (currentPage > additionalNews.length) {
+              loadMoreBtn.style.display = "none";
+            } else {
+              loadMoreBtn.innerHTML = "Load More News";
+            }
+          }, 1000);
+        });
+      });
+
+      function createNewsCard(data) {
+        const newsCol = document.createElement("div");
+        newsCol.className = "col-lg-4 col-md-6";
+        newsCol.innerHTML = `
+          <div class="news-card">
+            <div class="news-image">
+              <img src="${data.image}" class="img-fluid">
+              <div class="news-date">
+                <span class="day">${data.date.day}</span>
+                <span class="month">${data.date.month}</span>
+              </div>
+            </div>
+            <div class="news-content">
+              <div class="news-category">${data.category}</div>
+              <h3>${data.title}</h3>
+              <p>${data.excerpt}</p>
+              <a href="${data.link}" 
+                 class="read-more" 
+                 target="_blank" 
+                 rel="noopener noreferrer">
+                Read More
+                <i class="fas fa-external-link-alt ms-2"></i>
+              </a>
+            </div>
+          </div>
+        `;
+        return newsCol;
+      }
+
+      // Add this function to handle link clicks
+      document.addEventListener("DOMContentLoaded", function () {
+        // Handle all read more links
+        document.addEventListener("click", function (e) {
+          if (e.target.closest(".read-more")) {
+            e.preventDefault();
+            const link = e.target.closest(".read-more");
+            window.open(link.href, "_blank");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

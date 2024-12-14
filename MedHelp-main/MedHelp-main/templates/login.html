@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en" id="html" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Multi Pred | Login</title>
+    <link rel="icon" href="/MedHelp-main/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <style>
+      :root {
+        --primary-gradient: linear-gradient(45deg, #2937f0, #9f1ae2);
+        --hover-gradient: linear-gradient(45deg, #9f1ae2, #2937f0);
+        --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #0c0c1e, #1a1a3c);
+        color: #fff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .login-container {
+        max-width: 400px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      .form-control {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+        transition: var(--transition);
+      }
+
+      .form-control:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 0 0.25rem rgba(41, 55, 240, 0.25);
+        color: #fff;
+      }
+
+      .btn-primary {
+        background: var(--primary-gradient);
+        border: none;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: 500;
+        transition: var(--transition);
+      }
+
+      .btn-primary:hover {
+        background: var(--hover-gradient);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(41, 55, 240, 0.3);
+      }
+
+      .login-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .login-header img {
+        width: 80px;
+        margin-bottom: 1rem;
+      }
+
+      .form-floating label {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .form-floating > .form-control:focus ~ label {
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .signup-link {
+        text-align: center;
+        margin-top: 1.5rem;
+      }
+
+      .signup-link a {
+        color: #9f1ae2;
+        text-decoration: none;
+        transition: var(--transition);
+      }
+
+      .signup-link a:hover {
+        color: #2937f0;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .social-login .btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .social-login .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      /* Provider-specific colors on hover */
+      .social-login .btn:hover i.fa-google {
+        color: #DB4437;
+      }
+
+      .social-login .btn:hover i.fa-facebook {
+        color: #4267B2;
+      }
+
+      .social-login .btn:hover i.fa-apple {
+        color: #A2AAAD;
+      }
+
+      .social-login .btn:hover i.fa-microsoft {
+        color: #00A4EF;
+      }
+
+      .social-login .btn:hover i.fa-github {
+        color: #333;
+      }
+
+      .social-login .btn:hover i.fa-twitter {
+        color: #1DA1F2;
+      }
+
+      /* Ripple effect */
+      .social-login .btn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 5px;
+        height: 5px;
+        background: rgba(255, 255, 255, .5);
+        opacity: 0;
+        border-radius: 100%;
+        transform: scale(1, 1) translate(-50%);
+        transform-origin: 50% 50%;
+      }
+
+      .social-login .btn:focus:not(:active)::after {
+        animation: ripple 1s ease-out;
+      }
+
+      @keyframes ripple {
+        0% {
+          transform: scale(0, 0);
+          opacity: 1;
+        }
+        20% {
+          transform: scale(25, 25);
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: scale(40, 40);
+        }
+      }
+
+      .social-btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .social-btn:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s ease, height 0.6s ease;
+      }
+
+      .social-btn:hover:before {
+        width: 300px;
+        height: 300px;
+      }
+
+      .social-btn.loading {
+        pointer-events: none;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .social-btn.loading .btn-content {
+        display: none;
+      }
+
+      .social-btn.loading .provider-loading {
+        display: block;
+      }
+
+      .provider-loading {
+        animation: pulse 1.5s infinite;
+      }
+
+      /* Enhanced provider-specific styles */
+      .social-btn[data-provider="google"]:hover {
+        background: #DB4437;
+        border-color: #DB4437;
+      }
+
+      .social-btn[data-provider="facebook"]:hover {
+        background: #4267B2;
+        border-color: #4267B2;
+      }
+
+      .social-btn[data-provider="apple"]:hover {
+        background: #000;
+        border-color: #000;
+      }
+
+      .social-btn[data-provider="microsoft"]:hover {
+        background: #00A4EF;
+        border-color: #00A4EF;
+      }
+
+      .social-btn[data-provider="github"]:hover {
+        background: #333;
+        border-color: #333;
+      }
+
+      .social-btn[data-provider="twitter"]:hover {
+        background: #1DA1F2;
+        border-color: #1DA1F2;
+      }
+
+      @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+      }
+
+      .alert {
+        animation: slideIn 0.3s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .text-decoration-none {
+        color: #9f1ae2;
+        transition: var(--transition);
+      }
+
+      .text-decoration-none:hover {
+        color: #2937f0;
+        transform: translateX(5px);
+        display: inline-block;
+      }
+
+      .signup-link a, .login-link a {
+        position: relative;
+        display: inline-block;
+        padding: 0.25rem 0;
+      }
+
+      .signup-link a::after, .login-link a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background: var(--primary-gradient);
+        transform-origin: bottom right;
+        transition: transform 0.3s ease-out;
+      }
+
+      .signup-link a:hover::after, .login-link a:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+      }
+    </style>
+    
+    <!-- Google Sign-In -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <!-- Apple Sign-In -->
+    <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
+    
+    <!-- Add meta tag for Google Client ID -->
+    <meta name="google-signin-client_id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
+  </head>
+  <body>
+    <!-- Include your existing navbar here -->
+    
+    <div class="container">
+      <div class="login-container">
+        <div class="login-header">
+          <img src="/MedHelp-main/logo.png" alt="Multi Pred Logo">
+          <h2>Welcome Back</h2>
+          <p class="text-muted">Login to access your dashboard</p>
+        </div>
+        
+        <form action="{{ url_for('login') }}" method="POST">
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+            <label for="email">Email address</label>
+          </div>
+          
+          <div class="form-floating mb-4">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+            <label for="password">Password</label>
+          </div>
+          
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Login</button>
+          </div>
+          
+          <div id="messageContainer" class="mt-3" style="display: none;">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+              <span id="messageText"></span>
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          </div>
+          
+          <div class="social-login mt-4">
+            <div class="text-center mb-3">
+              <span class="text-muted">Or login with</span>
+            </div>
+            <div class="d-grid gap-2">
+              <a href="{{ url_for('google_auth') }}" class="btn btn-outline-light social-btn">
+                <div class="btn-content">
+                  <i class="fab fa-google me-2"></i>Google
+                </div>
+                <div class="provider-loading" style="display: none;">
+                  <i class="fas fa-circle-notch fa-spin"></i> Connecting...
+                </div>
+              </a>
+            </div>
+          </div>
+          
+          <div class="text-center mt-3">
+            <a href="recover-password.html" class="text-decoration-none">Forgot Password?</a>
+          </div>
+          
+          <div class="signup-link text-center mt-4">
+            <p class="mb-0">Don't have an account? 
+              <a href="signup.html" class="text-decoration-none">
+                <i class="fas fa-user-plus me-1"></i>Sign up
+              </a>
+            </p>
+          </div>
+        </form>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+          <a href="index.html" class="btn btn-outline-light">
+            <i class="fas fa-home me-2"></i>Back to Home
+          </a>
+          <a href="recover-password.html" class="btn btn-link text-light">
+            <i class="fas fa-key me-2"></i>Forgot Password?
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // Store the last used provider
+    const lastProvider = localStorage.getItem('lastLoginProvider');
+    const rememberProvider = localStorage.getItem('rememberProvider') === 'true';
+
+    if (lastProvider && rememberProvider) {
+      document.querySelector(`[data-provider="${lastProvider}"]`).classList.add('preferred');
+    }
+
+    function showError(message) {
+      const errorDiv = document.getElementById('errorMessage');
+      const errorText = document.getElementById('errorText');
+      errorText.textContent = message;
+      errorDiv.style.display = 'block';
+      
+      // Automatically hide after 5 seconds
+      setTimeout(() => {
+        errorDiv.style.display = 'none';
+      }, 5000);
+    }
+
+    async function socialLogin(event) {
+      event.preventDefault();
+      const button = event.currentTarget;
+      const provider = button.dataset.provider;
+      
+      // Remember provider preference if checked
+      if (document.getElementById('rememberProvider').checked) {
+        localStorage.setItem('lastLoginProvider', provider);
+        localStorage.setItem('rememberProvider', 'true');
+      }
+
+      // Show loading state
+      button.classList.add('loading');
+
+      try {
+        // Simulate provider-specific login flow
+        await providerLogin(provider);
+        
+        // Success - redirect to dashboard
+        window.location.href = 'dashboard.html';
+      } catch (error) {
+        // Show error message
+        showError(`Failed to login with ${provider}: ${error.message}`);
+        button.classList.remove('loading');
+      }
+    }
+
+    async function providerLogin(provider) {
+      // Simulate different provider behaviors
+      return new Promise((resolve, reject) => {
+        const delays = {
+          'google': 1500,
+          'facebook': 2000,
+          'apple': 2500,
+          'microsoft': 1800,
+          'github': 1600,
+          'twitter': 1700
+        };
+
+        setTimeout(() => {
+          // Simulate random success/failure
+          if (Math.random() > 0.1) {
+            resolve();
+          } else {
+            reject(new Error('Authentication failed'));
+          }
+        }, delays[provider] || 1500);
+      });
+    }
+
+    // Add click handlers to all social buttons
+    document.querySelectorAll('.social-btn').forEach(button => {
+      button.addEventListener('click', socialLogin);
+    });
+
+    // Form validation
+    document.querySelector('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        // Show loading state
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Logging in...';
+        submitBtn.disabled = true;
+
+        // Basic validation
+        if (!email || !password) {
+          throw new Error('Please fill in all fields');
+        }
+
+        // For demo purposes, we'll just redirect to dashboard
+        // In a real app, you would make an API call here
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1500);
+
+      } catch (error) {
+        showError(error.message);
+        submitBtn.innerHTML = 'Login';
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Social login handler
+    function handleSocialLogin(provider) {
+      // Show loading state
+      const button = event.target.closest('.social-btn');
+      button.classList.add('loading');
+
+      // Simulate login process
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 1500);
+    }
+
+    // Add click handlers to social buttons
+    document.querySelectorAll('.social-btn').forEach(button => {
+      button.addEventListener('click', () => handleSocialLogin(button.dataset.provider));
+    });
+
+    // Google Sign-In Handler
+    function handleGoogleSignIn(response) {
+        const credential = response.credential;
+        const decodedToken = JSON.parse(atob(credential.split('.')[1]));
+        
+        // Show loading state
+        showLoading('google');
+        
+        // Here you would typically send the token to your backend
+        // For demo, we'll just log the user in
+        setTimeout(() => {
+            // Store user info
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('userEmail', decodedToken.email);
+            localStorage.setItem('userName', decodedToken.name);
+            localStorage.setItem('userPicture', decodedToken.picture);
+            
+            // Redirect to dashboard
+            window.location.href = 'dashboard.html';
+        }, 1500);
+    }
+
+    // Apple Sign-In Configuration
+    window.AppleID.auth.init({
+        clientId: 'YOUR_APPLE_CLIENT_ID',
+        scope: 'name email',
+        redirectURI: 'https://your-domain.com/callback',
+        state: 'origin:web',
+        usePopup: true
+    });
+
+    // Apple Sign-In Handler
+    document.addEventListener('AppleIDSignInOnSuccess', (event) => {
+        // Show loading state
+        showLoading('apple');
+        
+        // Handle successful authorization
+        const { authorization } = event.detail;
+        
+        // Here you would typically send the authorization code to your backend
+        // For demo, we'll just log the user in
+        setTimeout(() => {
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('userEmail', authorization.email);
+            localStorage.setItem('userName', `${authorization.firstName} ${authorization.lastName}`);
+            
+            // Redirect to dashboard
+            window.location.href = 'dashboard.html';
+        }, 1500);
+    });
+
+    document.addEventListener('AppleIDSignInOnFailure', (event) => {
+        // Handle error
+        showError('Apple sign in failed: ' + event.detail.error);
+    });
+
+    function showLoading(provider) {
+        const button = document.querySelector(`[data-provider="${provider}"]`);
+        button.classList.add('loading');
+        button.querySelector('.btn-content').style.display = 'none';
+        button.querySelector('.provider-loading').style.display = 'block';
+    }
+
+    function hideLoading(provider) {
+        const button = document.querySelector(`[data-provider="${provider}"]`);
+        button.classList.remove('loading');
+        button.querySelector('.btn-content').style.display = 'block';
+        button.querySelector('.provider-loading').style.display = 'none';
+    }
+
+    // Enhanced error handling
+    function showError(message) {
+        const errorDiv = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        errorText.textContent = message;
+        errorDiv.style.display = 'block';
+        
+        // Add shake animation
+        errorDiv.classList.add('shake');
+        setTimeout(() => {
+            errorDiv.classList.remove('shake');
+        }, 500);
+        
+        // Auto hide after 5 seconds
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 5000);
+    }
+
+    // Add this to your existing styles
+    <style>
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+
+    .shake {
+        animation: shake 0.5s ease-in-out;
+    }
+    </style>
+    </script>
+  </body>
+</html> 

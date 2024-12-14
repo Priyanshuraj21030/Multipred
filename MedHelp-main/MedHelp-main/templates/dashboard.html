@@ -1,0 +1,2241 @@
+<!DOCTYPE html>
+<html lang="en" id="html" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Multi Pred | Dashboard</title>
+    <link rel="icon" href="/MedHelp-main/logo.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <style>
+      /* Base styles */
+      :root {
+        --primary-gradient: linear-gradient(45deg, #2937f0, #9f1ae2);
+        --hover-gradient: linear-gradient(45deg, #9f1ae2, #2937f0);
+        --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #0c0c1e, #1a1a3c);
+        color: #fff;
+      }
+
+      /* Dashboard specific styles */
+      .dashboard-container {
+        padding: 2rem 0;
+      }
+
+      .dashboard-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        transition: var(--transition);
+        animation: fadeInUp 0.5s ease-out forwards;
+      }
+
+      .dashboard-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .metric-chart {
+        height: 300px;
+        margin: 1rem 0;
+      }
+
+      .health-metric {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .metric-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--primary-gradient);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+      }
+
+      .metric-value {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .goal-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .goal-progress {
+        width: 100px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background: var(--primary-gradient);
+        transition: width 0.3s ease;
+      }
+
+      .prediction-history {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .prediction-item {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .prediction-date {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .prediction-result {
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        font-size: 0.9rem;
+      }
+
+      .result-positive {
+        background: rgba(40, 167, 69, 0.2);
+        color: #28a745;
+      }
+
+      .result-negative {
+        background: rgba(220, 53, 69, 0.2);
+        color: #dc3545;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .dashboard-header {
+        background: var(--primary-gradient);
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .dashboard-header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("/MedHelp-main/grid-pattern.svg");
+        opacity: 0.1;
+        animation: backgroundMove 20s linear infinite;
+      }
+
+      .quick-actions {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .action-button {
+        background: rgba(255, 255, 255, 0.05);
+        border: none;
+        padding: 1rem;
+        border-radius: 15px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: var(--transition);
+      }
+
+      .action-button:hover {
+        background: var(--primary-gradient);
+        transform: translateY(-2px);
+      }
+
+      /* Scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--primary-gradient);
+        border-radius: 4px;
+      }
+
+      /* Add new dashboard section styles */
+      .health-tracker {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .activity-feed {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .activity-item {
+        padding: 1rem;
+        border-left: 3px solid var(--primary-color);
+        margin-bottom: 1rem;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 0 10px 10px 0;
+      }
+
+      .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .metric-card {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1.5rem;
+        border-radius: 15px;
+        text-align: center;
+      }
+
+      .metric-value {
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0.5rem 0;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .health-goals {
+        margin-top: 2rem;
+      }
+
+      .goal-progress {
+        height: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 0.5rem;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background: var(--primary-gradient);
+        border-radius: 4px;
+        transition: width 0.3s ease;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: var(--primary-gradient);
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .calendar-widget {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.5rem;
+      }
+
+      .calendar-day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .calendar-day:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .calendar-day.active {
+        background: var(--primary-gradient);
+      }
+
+      .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .action-button {
+        background: rgba(255, 255, 255, 0.05);
+        border: none;
+        padding: 1rem;
+        border-radius: 10px;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .action-button:hover {
+        background: var(--primary-gradient);
+        transform: translateY(-2px);
+      }
+
+      .reminder-list {
+        margin-top: 1rem;
+      }
+
+      .reminder-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+      }
+
+      .reminder-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--primary-gradient);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .calendar-container {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 15px;
+        padding: 1rem;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .upcoming-events {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      .event-item {
+        padding: 0.75rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .event-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        transform: translateX(5px);
+      }
+
+      .medication-list {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      .medication-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+      }
+
+      .medication-item .toggle-switch {
+        position: relative;
+        width: 50px;
+        height: 24px;
+      }
+
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 34px;
+        transition: var(--transition);
+      }
+
+      .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+        background: white;
+        border-radius: 50%;
+        transition: var(--transition);
+      }
+
+      input:checked + .toggle-slider {
+        background: var(--primary-gradient);
+      }
+
+      input:checked + .toggle-slider:before {
+        transform: translateX(26px);
+      }
+
+      .health-log-form {
+        animation: slideDown 0.3s ease-out;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .calendar-container {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 15px;
+        padding: 1.5rem;
+      }
+
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .calendar-weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .calendar-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+      }
+
+      .calendar-day {
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: var(--transition);
+        position: relative;
+        padding: 5px;
+      }
+
+      .calendar-day:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .calendar-day.active {
+        background: var(--primary-gradient);
+      }
+
+      .calendar-day.has-event::after {
+        content: "";
+        position: absolute;
+        bottom: 5px;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--primary-gradient);
+      }
+
+      .calendar-day.today {
+        border: 2px solid var(--primary-gradient);
+      }
+
+      .calendar-day.different-month {
+        opacity: 0.3;
+      }
+
+      .event-form {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .calendar-container {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 15px;
+        padding: 1.5rem;
+      }
+
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .month-navigation {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .calendar-view-options {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .btn-icon {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+        transition: var(--transition);
+        font-size: 0.8rem;
+      }
+
+      .btn-icon:hover {
+        background: var(--primary-gradient);
+        transform: translateY(-2px);
+      }
+
+      .calendar-weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.3rem;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.7);
+        text-align: center;
+        font-size: 0.8rem;
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.3rem;
+      }
+
+      .calendar-day {
+        aspect-ratio: 1;
+        padding: 0.3rem;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        font-size: 0.9rem;
+      }
+
+      .calendar-day:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateY(-2px);
+      }
+
+      .calendar-day.active {
+        background: var(--primary-gradient);
+        border-color: transparent;
+      }
+
+      .calendar-day.today {
+        border: 2px solid var(--primary-gradient);
+      }
+
+      .calendar-day .day-number {
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 0.15rem;
+      }
+
+      .calendar-day .event-dots {
+        display: flex;
+        gap: 2px;
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .event-dot {
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: var(--primary-gradient);
+      }
+
+      .event-form {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        display: none;
+      }
+
+      .event-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .upcoming-events {
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 0.5rem;
+      }
+
+      .event-item {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        transition: var(--transition);
+      }
+
+      .event-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateX(5px);
+      }
+
+      .event-item .event-time {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 0.25rem;
+      }
+
+      .event-item .event-title {
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+      }
+
+      .event-item .event-type {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        background: var(--primary-gradient);
+        margin-bottom: 0.25rem;
+      }
+
+      .event-item .event-notes {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      #currentMonthYear {
+        font-size: 1.1rem;
+        margin: 0 0.8rem;
+      }
+
+      /* Week View Styles */
+      .calendar-week-view {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 1px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 1px;
+      }
+
+      .week-day-column {
+        background: rgba(255, 255, 255, 0.03);
+        min-height: 600px;
+      }
+
+      .week-day-header {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .week-day-name {
+        font-weight: 500;
+        margin-bottom: 5px;
+      }
+
+      .time-slot {
+        padding: 10px;
+        min-height: 60px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      /* Day View Styles */
+      .calendar-day-view {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        padding: 1px;
+      }
+
+      .day-time-slot {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        min-height: 60px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .time-label {
+        padding: 10px;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+        text-align: right;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .event-space {
+        padding: 5px;
+        position: relative;
+      }
+
+      .calendar-event {
+        background: var(--primary-gradient);
+        border-radius: 5px;
+        padding: 5px;
+        margin: 2px 0;
+        font-size: 0.9rem;
+      }
+
+      .event-title {
+        font-weight: 500;
+        margin-bottom: 2px;
+      }
+
+      .event-time {
+        font-size: 0.8rem;
+        opacity: 0.8;
+      }
+
+      /* View option buttons */
+      .calendar-view-options .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .calendar-view-options .btn.active {
+        background: var(--primary-gradient);
+        border-color: transparent;
+      }
+
+      .dropdown-menu {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .dropdown-item {
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        transition: var(--transition);
+      }
+
+      .dropdown-item:hover {
+        background: var(--primary-gradient);
+        color: #fff;
+      }
+
+      /* Notification Styles */
+      .notification-menu {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .notification-item {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: var(--transition);
+      }
+
+      .notification-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .notification-title {
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .notification-text {
+        font-size: 0.8rem;
+      }
+
+      /* Quiz Styles */
+      .quiz-container {
+        position: relative;
+      }
+
+      .quiz-question {
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      .quiz-options {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 1rem;
+      }
+
+      .quiz-navigation button {
+        min-width: 120px;
+      }
+
+      .progress-bar {
+        background: var(--primary-gradient);
+        transition: width 0.3s ease;
+      }
+
+      .form-check-input:checked {
+        background-color: #9f1ae2;
+        border-color: #9f1ae2;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Replace the existing navbar section with this -->
+    <nav class="navbar p-1 sticky-top navbar-expand-lg bg-body-secondary">
+      <div class="container-fluid">
+        <a href="/">
+          <img
+            src="/MedHelp-main/logo.png"
+            width="30"
+            height="30"
+            alt="logo"
+            id="logo"
+            role="button"
+            style="margin-right: 15px"
+          />
+        </a>
+
+        <a class="navbar-brand" href="index.html">Multi Pred</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div id="options">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="index.html"
+                  >Home</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="about.html">About</a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link active d-flex align-items-center"
+                  href="dashboard.html"
+                >
+                  <i class="fas fa-chart-line me-1"></i>
+                  Dashboard
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Features
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="diabetes.html"
+                      >Diabetes Prediction</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="Breastcancer.html"
+                      >Breast Cancer Prediction</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="bmi.html">BMI Calculator</a>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item" href="research-insights.html"
+                    >What are we choosing this topic?</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="d-flex flex-row justify-content-center align-items-center"
+            id="themeselect"
+          >
+            <img
+              src="/MedHelp-main/dark.png"
+              alt="Dark"
+              id="modeimg"
+              height="18px"
+              onclick="toggleTheme()"
+              style="cursor: pointer"
+            />
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+      <div class="container">
+        <h1 class="text-white mb-3">Welcome Back, User!</h1>
+        <p class="text-white-50">Track your health metrics and predictions</p>
+      </div>
+    </header>
+
+    <div class="container dashboard-container">
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <div class="dropdown">
+          <button
+            class="action-button"
+            type="button"
+            id="predictionDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fas fa-plus"></i>
+            New Prediction
+            <i class="fas fa-caret-down ms-2"></i>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="predictionDropdown">
+            <li>
+              <a class="dropdown-item" href="diabetes.html"
+                >Diabetes Prediction</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="Breastcancer.html"
+                >Breast Cancer Prediction</a
+              >
+            </li>
+          </ul>
+        </div>
+        <button class="action-button" onclick="window.location.href='bmi.html'">
+          <i class="fas fa-calculator"></i>
+          Calculate BMI
+        </button>
+        <button class="action-button" onclick="exportData()">
+          <i class="fas fa-download"></i>
+          Export Data
+        </button>
+      </div>
+
+      <div class="row">
+        <!-- Health Metrics -->
+        <div class="col-md-6">
+          <div class="dashboard-card">
+            <h3>Health Metrics</h3>
+            <div class="metric-chart">
+              <canvas id="healthMetricsChart"></canvas>
+            </div>
+            <div class="health-metric">
+              <div class="metric-icon">
+                <i class="fas fa-weight"></i>
+              </div>
+              <div>
+                <div class="metric-label">Current BMI</div>
+                <div class="metric-value">22.5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prediction History -->
+        <div class="col-md-6">
+          <div class="dashboard-card">
+            <h3>Recent Predictions</h3>
+            <div class="prediction-history">
+              <div class="prediction-item">
+                <div>
+                  <div>Diabetes Risk Assessment</div>
+                  <div class="prediction-date">Dec 23, 2023</div>
+                </div>
+                <span class="prediction-result result-negative">Low Risk</span>
+              </div>
+              <div class="prediction-item">
+                <div>
+                  <div>Breast Cancer Screening</div>
+                  <div class="prediction-date">Dec 20, 2023</div>
+                </div>
+                <span class="prediction-result result-negative">Negative</span>
+              </div>
+              <!-- Add more prediction items -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Health Goals -->
+        <div class="col-md-6">
+          <div class="dashboard-card">
+            <h3>Health Goals</h3>
+            <div class="goal-item">
+              <div>
+                <div>Target BMI</div>
+                <small>Progress: 80%</small>
+              </div>
+              <div class="goal-progress">
+                <div class="progress-bar" style="width: 80%"></div>
+              </div>
+            </div>
+            <!-- Add more goals -->
+          </div>
+        </div>
+
+        <!-- Upcoming Reminders -->
+        <div class="col-md-6">
+          <div class="dashboard-card">
+            <h3>Reminders</h3>
+            <div class="reminder-list">
+              <div class="health-metric">
+                <div class="metric-icon">
+                  <i class="fas fa-clock"></i>
+                </div>
+                <div>
+                  <div>Next Health Check</div>
+                  <div class="metric-value">Jan 15, 2024</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Health Tracker -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="dashboard-card">
+            <h3>Quick Health Log</h3>
+            <div class="health-log-form">
+              <div class="row g-3">
+                <div class="col-md-3">
+                  <label class="form-label">Blood Pressure</label>
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Systolic"
+                    />
+                    <span class="input-group-text">/</span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Diastolic"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Heart Rate</label>
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="BPM"
+                    />
+                    <span class="input-group-text">BPM</span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Blood Sugar</label>
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="mg/dL"
+                    />
+                    <span class="input-group-text">mg/dL</span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">&nbsp;</label>
+                  <button
+                    class="btn btn-primary w-100"
+                    onclick="logHealthMetrics()"
+                  >
+                    Log Metrics
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Calendar -->
+      <div class="row mb-4">
+        <div class="col-md-8">
+          <div class="dashboard-card">
+            <h3>Health Calendar</h3>
+            <div id="healthCalendar" class="calendar-container">
+              <div class="calendar-header">
+                <div class="month-navigation">
+                  <button
+                    class="btn btn-icon"
+                    onclick="calendar.previousMonth()"
+                  >
+                    <i class="fas fa-chevron-left"></i>
+                  </button>
+                  <h4 id="currentMonthYear"></h4>
+                  <button class="btn btn-icon" onclick="calendar.nextMonth()">
+                    <i class="fas fa-chevron-right"></i>
+                  </button>
+                </div>
+                <div class="calendar-view-options">
+                  <button
+                    class="btn btn-sm btn-outline-primary active"
+                    data-view="month"
+                    onclick="calendar.switchView('month')"
+                  >
+                    Month
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-primary"
+                    data-view="week"
+                    onclick="calendar.switchView('week')"
+                  >
+                    Week
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-primary"
+                    data-view="day"
+                    onclick="calendar.switchView('day')"
+                  >
+                    Day
+                  </button>
+                </div>
+              </div>
+              <div class="calendar-weekdays">
+                <div>Sunday</div>
+                <div>Monday</div>
+                <div>Tuesday</div>
+                <div>Wednesday</div>
+                <div>Thursday</div>
+                <div>Friday</div>
+                <div>Saturday</div>
+              </div>
+              <div class="calendar-grid" id="calendarDays"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="dashboard-card">
+            <div class="event-header">
+              <h3>Add Event</h3>
+              <button class="btn btn-icon" onclick="toggleEventForm()">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+            <div class="event-form mb-4" id="eventForm">
+              <div class="form-group mb-3">
+                <label class="form-label">Event Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="eventTitle"
+                  placeholder="Enter event title"
+                />
+              </div>
+              <div class="form-group mb-3">
+                <label class="form-label">Date & Time</label>
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  id="eventDateTime"
+                />
+              </div>
+              <div class="form-group mb-3">
+                <label class="form-label">Event Type</label>
+                <select class="form-control" id="eventType">
+                  <option value="appointment">Doctor Appointment</option>
+                  <option value="medication">Medication Reminder</option>
+                  <option value="checkup">Health Check-up</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group mb-3">
+                <label class="form-label">Notes</label>
+                <textarea
+                  class="form-control"
+                  id="eventNotes"
+                  rows="3"
+                  placeholder="Add event notes..."
+                ></textarea>
+              </div>
+              <div class="form-group mb-3">
+                <label class="form-label">Reminder</label>
+                <select class="form-control" id="eventReminder">
+                  <option value="none">No reminder</option>
+                  <option value="15">15 minutes before</option>
+                  <option value="30">30 minutes before</option>
+                  <option value="60">1 hour before</option>
+                  <option value="1440">1 day before</option>
+                </select>
+              </div>
+              <button class="btn btn-primary w-100" onclick="addNewEvent()">
+                Add Event
+              </button>
+            </div>
+            <div class="upcoming-events-section">
+              <h3>Upcoming Events</h3>
+              <div class="upcoming-events" id="upcomingEvents">
+                <!-- Events will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Medication Tracker -->
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="dashboard-card">
+            <h3>Medication Schedule</h3>
+            <div class="medication-list" id="medicationList">
+              <!-- Medications will be populated dynamically -->
+            </div>
+            <button
+              class="btn btn-primary w-100 mt-3"
+              onclick="addMedication()"
+            >
+              Add Medication
+            </button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="dashboard-card">
+            <h3>Today's Schedule</h3>
+            <div class="today-schedule" id="todaySchedule">
+              <!-- Schedule will be populated dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Health Assessment Quiz Section -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="dashboard-card">
+            <h3 class="mb-4">Health Assessment Quiz</h3>
+            <div id="healthQuiz">
+              <div class="quiz-progress mb-4">
+                <div class="progress" style="height: 10px">
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    style="width: 0%"
+                    id="quizProgress"
+                  ></div>
+                </div>
+              </div>
+              <div class="quiz-container">
+                <div class="quiz-question active" data-question="1">
+                  <h4 class="mb-3">How often do you exercise?</h4>
+                  <div class="quiz-options">
+                    <div class="form-check mb-3">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="exercise"
+                        value="daily"
+                      />
+                      <label class="form-check-label">Daily</label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="exercise"
+                        value="weekly"
+                      />
+                      <label class="form-check-label">2-3 times per week</label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="exercise"
+                        value="rarely"
+                      />
+                      <label class="form-check-label">Rarely</label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="quiz-question"
+                  data-question="2"
+                  style="display: none"
+                >
+                  <h4 class="mb-3">How would you rate your stress level?</h4>
+                  <div class="quiz-options">
+                    <div class="form-check mb-3">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="stress"
+                        value="low"
+                      />
+                      <label class="form-check-label">Low</label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="stress"
+                        value="medium"
+                      />
+                      <label class="form-check-label">Medium</label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="stress"
+                        value="high"
+                      />
+                      <label class="form-check-label">High</label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="quiz-question"
+                  data-question="3"
+                  style="display: none"
+                >
+                  <h4 class="mb-3">How many hours of sleep do you get?</h4>
+                  <div class="quiz-options">
+                    <div class="form-check mb-3">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="sleep"
+                        value="less"
+                      />
+                      <label class="form-check-label">Less than 6 hours</label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="sleep"
+                        value="normal"
+                      />
+                      <label class="form-check-label">6-8 hours</label>
+                    </div>
+                    <div class="form-check mb-3">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="sleep"
+                        value="more"
+                      />
+                      <label class="form-check-label">More than 8 hours</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="quiz-navigation mt-4 text-center">
+                <button
+                  class="btn btn-secondary me-2"
+                  onclick="previousQuestion()"
+                  id="prevBtn"
+                  style="display: none"
+                >
+                  Previous
+                </button>
+                <button
+                  class="btn btn-primary"
+                  onclick="nextQuestion()"
+                  id="nextBtn"
+                >
+                  Next
+                </button>
+              </div>
+              <div id="quizResult" class="mt-4" style="display: none">
+                <!-- Results will be displayed here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Update the Emergency Contacts section -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="dashboard-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h3>Emergency Contacts</h3>
+              <button class="btn btn-sm btn-primary" onclick="showAddContactForm()">
+                <i class="fas fa-plus"></i> Add Contact
+              </button>
+            </div>
+
+            <!-- Add Contact Form -->
+            <div id="addContactForm" style="display: none;" class="mb-4">
+              <form onsubmit="addNewContact(event)" class="bg-opacity-10 bg-light p-4 rounded">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Contact Name</label>
+                    <input type="text" class="form-control" id="contactName" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Relationship/Role</label>
+                    <input type="text" class="form-control" id="contactRole" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="contactPhone" pattern="[0-9+\-\s]+" required>
+                    <small class="text-muted">Format: +1 234-567-8900</small>
+                  </div>
+                  <div class="col-12 text-end">
+                    <button type="button" class="btn btn-secondary me-2" onclick="hideAddContactForm()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Contact</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="emergency-contacts" id="contactsList">
+              <div class="contact-item d-flex align-items-center p-3 mb-3 bg-opacity-10 bg-light rounded">
+                <div class="contact-icon me-3">
+                  <i class="fas fa-user-md fa-2x text-primary"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mb-1">Dr. Smith</h5>
+                  <div>Primary Care Physician</div>
+                  <div class="text-muted">+1 234 567 8900</div>
+                </div>
+                <a href="tel:+12345678900" class="btn btn-danger">
+                  <i class="fas fa-phone-alt"></i>
+                </a>
+              </div>
+
+              <div class="contact-item d-flex align-items-center p-3 mb-3 bg-opacity-10 bg-light rounded">
+                <div class="contact-icon me-3">
+                  <i class="fas fa-hospital fa-2x text-warning"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mb-1">City Hospital</h5>
+                  <div>Emergency Room</div>
+                  <div class="text-muted">+1 234 567 8901</div>
+                </div>
+                <a href="tel:+12345678901" class="btn btn-danger">
+                  <i class="fas fa-phone-alt"></i>
+                </a>
+              </div>
+
+              <div class="contact-item d-flex align-items-center p-3 mb-3 bg-opacity-10 bg-light rounded">
+                <div class="contact-icon me-3">
+                  <i class="fas fa-user-friends fa-2x text-success"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mb-1">Emergency Contact</h5>
+                  <div>Family Member</div>
+                  <div class="text-muted">+1 234 567 8902</div>
+                </div>
+                <a href="tel:+12345678902" class="btn btn-danger">
+                  <i class="fas fa-phone-alt"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Health Metrics Chart
+      const ctx = document
+        .getElementById("healthMetricsChart")
+        .getContext("2d");
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+          datasets: [
+            {
+              label: "BMI Trend",
+              data: [22, 22.5, 22.3, 22.8, 22.5, 22.5],
+              borderColor: "#4776E6",
+              tension: 0.4,
+              fill: false,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: "#fff",
+              },
+            },
+          },
+          scales: {
+            y: {
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+              },
+              ticks: {
+                color: "#fff",
+              },
+            },
+            x: {
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+              },
+              ticks: {
+                color: "#fff",
+              },
+            },
+          },
+        },
+      });
+
+      // Health Metrics Logging
+      function logHealthMetrics() {
+        // Add animation to button
+        const button = event.target;
+        button.innerHTML = '<i class="fas fa-check"></i> Logged!';
+        button.classList.add("btn-success");
+
+        setTimeout(() => {
+          button.innerHTML = "Log Metrics";
+          button.classList.remove("btn-success");
+        }, 2000);
+
+        // Here you would typically send the data to your backend
+      }
+
+      // Calendar Events
+      function addNewEvent() {
+        const title = document.getElementById("eventTitle").value;
+        const date = document.getElementById("eventDateTime").value;
+        const type = document.getElementById("eventType").value;
+        const notes = document.getElementById("eventNotes").value;
+
+        if (!title || !date) {
+          alert("Please fill in the required fields");
+          return;
+        }
+
+        const event = {
+          title,
+          date,
+          type,
+          notes,
+        };
+
+        calendar.addEvent(event);
+
+        // Clear form
+        document.getElementById("eventTitle").value = "";
+        document.getElementById("eventNotes").value = "";
+      }
+
+      // Medication Tracking
+      function addMedication() {
+        const medication = {
+          name: "New Medication",
+          schedule: "Daily",
+          time: "09:00",
+        };
+
+        const medElement = document.createElement("div");
+        medElement.className = "medication-item";
+        medElement.innerHTML = `
+                <div>
+                    <div class="medication-name">${medication.name}</div>
+                    <small>${medication.schedule} at ${medication.time}</small>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox">
+                    <span class="toggle-slider"></span>
+                </label>
+            `;
+
+        document.getElementById("medicationList").appendChild(medElement);
+      }
+
+      // Initialize components
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add some sample data
+        addNewEvent();
+        addMedication();
+
+        // Update today's schedule
+        const schedule = document.getElementById("todaySchedule");
+        schedule.innerHTML = `
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">09:00</div>
+                        <div class="event">Morning Medication</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">14:00</div>
+                        <div class="event">Blood Pressure Check</div>
+                    </div>
+                </div>
+            `;
+      });
+
+      class Calendar {
+        constructor(container) {
+          this.container = container;
+          this.date = new Date();
+          this.selectedDate = new Date();
+          this.events = [];
+          this.currentView = "month"; // Add view state
+          this.render();
+          this.attachEventListeners();
+        }
+
+        // Add method to switch views
+        switchView(view) {
+          this.currentView = view;
+          this.render();
+
+          // Update active button state
+          document
+            .querySelectorAll(".calendar-view-options button")
+            .forEach((btn) => {
+              btn.classList.remove("active");
+            });
+          document
+            .querySelector(`.calendar-view-options button[data-view="${view}"]`)
+            .classList.add("active");
+        }
+
+        render() {
+          switch (this.currentView) {
+            case "week":
+              this.renderWeekView();
+              break;
+            case "day":
+              this.renderDayView();
+              break;
+            default:
+              this.renderMonthView();
+          }
+        }
+
+        renderWeekView() {
+          const startOfWeek = new Date(this.date);
+          startOfWeek.setDate(this.date.getDate() - this.date.getDay());
+
+          const monthYear = document.getElementById("currentMonthYear");
+          monthYear.textContent = `Week of ${startOfWeek.toLocaleDateString()}`;
+
+          const daysContainer = document.getElementById("calendarDays");
+          daysContainer.innerHTML = "";
+          daysContainer.className = "calendar-week-view";
+
+          for (let i = 0; i < 7; i++) {
+            const currentDate = new Date(startOfWeek);
+            currentDate.setDate(startOfWeek.getDate() + i);
+
+            const dayCol = document.createElement("div");
+            dayCol.className = "week-day-column";
+
+            // Add day header
+            const dayHeader = document.createElement("div");
+            dayHeader.className = "week-day-header";
+            dayHeader.innerHTML = `
+                <div class="week-day-name">${currentDate.toLocaleDateString(
+                  "en-US",
+                  { weekday: "short" }
+                )}</div>
+                <div class="week-day-date">${currentDate.getDate()}</div>
+            `;
+            dayCol.appendChild(dayHeader);
+
+            // Add time slots
+            for (let hour = 0; hour < 24; hour++) {
+              const timeSlot = document.createElement("div");
+              timeSlot.className = "time-slot";
+              timeSlot.textContent = `${hour}:00`;
+
+              // Check for events at this time
+              const events = this.getEventsForDateTime(currentDate, hour);
+              events.forEach((event) => {
+                const eventElement = this.createEventElement(event);
+                timeSlot.appendChild(eventElement);
+              });
+
+              dayCol.appendChild(timeSlot);
+            }
+
+            daysContainer.appendChild(dayCol);
+          }
+        }
+
+        renderDayView() {
+          const monthYear = document.getElementById("currentMonthYear");
+          monthYear.textContent = this.date.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+
+          const daysContainer = document.getElementById("calendarDays");
+          daysContainer.innerHTML = "";
+          daysContainer.className = "calendar-day-view";
+
+          // Create time slots for the day
+          for (let hour = 0; hour < 24; hour++) {
+            const timeSlot = document.createElement("div");
+            timeSlot.className = "day-time-slot";
+
+            const timeLabel = document.createElement("div");
+            timeLabel.className = "time-label";
+            timeLabel.textContent = `${hour.toString().padStart(2, "0")}:00`;
+
+            const eventSpace = document.createElement("div");
+            eventSpace.className = "event-space";
+
+            // Check for events at this time
+            const events = this.getEventsForDateTime(this.date, hour);
+            events.forEach((event) => {
+              const eventElement = this.createEventElement(event);
+              eventSpace.appendChild(eventElement);
+            });
+
+            timeSlot.appendChild(timeLabel);
+            timeSlot.appendChild(eventSpace);
+            daysContainer.appendChild(timeSlot);
+          }
+        }
+
+        // Helper method to get events for a specific date and hour
+        getEventsForDateTime(date, hour) {
+          return this.events.filter((event) => {
+            const eventDate = new Date(event.date);
+            return (
+              this.isSameDate(eventDate, date) && eventDate.getHours() === hour
+            );
+          });
+        }
+
+        // Helper method to create event element
+        createEventElement(event) {
+          const eventDiv = document.createElement("div");
+          eventDiv.className = "calendar-event";
+          eventDiv.innerHTML = `
+            <div class="event-title">${event.title}</div>
+            <div class="event-time">${new Date(event.date).toLocaleTimeString(
+              [],
+              { hour: "2-digit", minute: "2-digit" }
+            )}</div>
+          `;
+          return eventDiv;
+        }
+
+        renderMonthView() {
+          const year = this.date.getFullYear();
+          const month = this.date.getMonth();
+          const firstDay = new Date(year, month, 1);
+          const lastDay = new Date(year, month + 1, 0);
+          const daysInMonth = lastDay.getDate();
+          const startingDay = firstDay.getDay();
+
+          const monthNames = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ];
+
+          // Update month/year display
+          document.getElementById(
+            "currentMonthYear"
+          ).textContent = `${monthNames[month]} ${year}`;
+
+          // Generate calendar days
+          const daysContainer = document.getElementById("calendarDays");
+          daysContainer.innerHTML = "";
+
+          // Previous month's days
+          const prevMonth = new Date(year, month, 0);
+          const prevMonthDays = prevMonth.getDate();
+          for (let i = startingDay - 1; i >= 0; i--) {
+            const dayDiv = this.createDayElement(prevMonthDays - i, true);
+            daysContainer.appendChild(dayDiv);
+          }
+
+          // Current month's days
+          for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(year, month, day);
+            const dayDiv = this.createDayElement(day, false, date);
+            daysContainer.appendChild(dayDiv);
+          }
+
+          // Next month's days
+          const remainingDays = 42 - (startingDay + daysInMonth); // 42 = 6 rows × 7 days
+          for (let day = 1; day <= remainingDays; day++) {
+            const dayDiv = this.createDayElement(day, true);
+            daysContainer.appendChild(dayDiv);
+          }
+        }
+
+        createDayElement(day, isDifferentMonth, date) {
+          const dayDiv = document.createElement("div");
+          dayDiv.className = "calendar-day";
+
+          const dayNumber = document.createElement("div");
+          dayNumber.className = "day-number";
+          dayNumber.textContent = day;
+          dayDiv.appendChild(dayNumber);
+
+          if (date && this.hasEvents(date)) {
+            const eventDots = document.createElement("div");
+            eventDots.className = "event-dots";
+
+            // Add dots based on number of events (max 3)
+            const events = this.getEventsForDate(date);
+            const dotCount = Math.min(events.length, 3);
+            for (let i = 0; i < dotCount; i++) {
+              const dot = document.createElement("div");
+              dot.className = "event-dot";
+              eventDots.appendChild(dot);
+            }
+
+            dayDiv.appendChild(eventDots);
+          }
+
+          if (isDifferentMonth) {
+            dayDiv.classList.add("different-month");
+          } else if (date) {
+            if (this.isToday(date)) {
+              dayDiv.classList.add("today");
+            }
+            if (this.isSameDate(date, this.selectedDate)) {
+              dayDiv.classList.add("active");
+            }
+            dayDiv.addEventListener("click", () => this.selectDate(date));
+          }
+
+          return dayDiv;
+        }
+
+        isToday(date) {
+          const today = new Date();
+          return this.isSameDate(date, today);
+        }
+
+        isSameDate(date1, date2) {
+          return (
+            date1.getDate() === date2.getDate() &&
+            date1.getMonth() === date2.getMonth() &&
+            date1.getFullYear() === date2.getFullYear()
+          );
+        }
+
+        hasEvents(date) {
+          return this.events.some((event) =>
+            this.isSameDate(new Date(event.date), date)
+          );
+        }
+
+        selectDate(date) {
+          this.selectedDate = date;
+          document.getElementById("eventDateTime").valueAsDate = date;
+          this.render();
+          this.showEventsForDate(date);
+        }
+
+        showEventsForDate(date) {
+          const events = this.getEventsForDate(date);
+          const container = document.getElementById("upcomingEvents");
+
+          container.innerHTML =
+            events
+              .map(
+                (event) => `
+            <div class="event-item">
+              <div class="event-time">${new Date(
+                event.date
+              ).toLocaleTimeString()}</div>
+              <div class="event-title">${event.title}</div>
+              <div class="event-type">${event.type}</div>
+              ${
+                event.notes
+                  ? `<div class="event-notes">${event.notes}</div>`
+                  : ""
+              }
+            </div>
+          `
+              )
+              .join("") ||
+            '<p class="text-center text-muted">No events for this date</p>';
+        }
+
+        previousMonth() {
+          this.date.setMonth(this.date.getMonth() - 1);
+          this.render();
+        }
+
+        nextMonth() {
+          this.date.setMonth(this.date.getMonth() + 1);
+          this.render();
+        }
+
+        addEvent(event) {
+          this.events.push(event);
+          this.render();
+          this.showEventsForDate(new Date(event.date));
+        }
+
+        attachEventListeners() {
+          document.getElementById("eventDateTime").valueAsDate = new Date();
+        }
+
+        getEventsForDate(date) {
+          return this.events.filter((event) =>
+            this.isSameDate(new Date(event.date), date)
+          );
+        }
+      }
+
+      // Initialize calendar
+      let calendar;
+      document.addEventListener("DOMContentLoaded", function () {
+        calendar = new Calendar(document.getElementById("healthCalendar"));
+      });
+
+      function toggleEventForm() {
+        const form = document.getElementById("eventForm");
+        form.style.display = form.style.display === "none" ? "block" : "none";
+      }
+
+      function exportData() {
+        // Sample data - you would typically get this from your backend
+        const healthData = {
+          predictions: [
+            {
+              type: "Diabetes Risk Assessment",
+              date: "Dec 23, 2023",
+              result: "Low Risk",
+            },
+            {
+              type: "Breast Cancer Screening",
+              date: "Dec 20, 2023",
+              result: "Negative",
+            },
+          ],
+          metrics: {
+            bmi: "22.5",
+            lastUpdated: new Date().toLocaleDateString(),
+          },
+        };
+
+        // Convert data to CSV format
+        let csvContent = "data:text/csv;charset=utf-8,";
+
+        // Add headers
+        csvContent += "Type,Date,Result\n";
+
+        // Add prediction records
+        healthData.predictions.forEach((record) => {
+          csvContent += `${record.type},${record.date},${record.result}\n`;
+        });
+
+        // Add metrics
+        csvContent += "\nHealth Metrics\n";
+        csvContent += `BMI,${healthData.metrics.bmi}\n`;
+        csvContent += `Last Updated,${healthData.metrics.lastUpdated}\n`;
+
+        // Create download link
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "health_data.csv");
+
+        // Add animation class to button
+        const button = document.querySelector(".action-button");
+        button.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
+        button.style.background = "var(--primary-gradient)";
+
+        // Reset button after animation
+        setTimeout(() => {
+          button.innerHTML = '<i class="fas fa-download"></i> Export Data';
+          button.style.background = "";
+        }, 2000);
+
+        // Trigger download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      // Quiz functionality
+      let currentQuestion = 1;
+      const totalQuestions = 3;
+
+      function updateProgress() {
+        const progress = ((currentQuestion - 1) / totalQuestions) * 100;
+        document.getElementById("quizProgress").style.width = `${progress}%`;
+      }
+
+      function nextQuestion() {
+        const currentQuestionEl = document.querySelector(
+          `.quiz-question[data-question="${currentQuestion}"]`
+        );
+        const selectedOption = currentQuestionEl.querySelector(
+          'input[type="radio"]:checked'
+        );
+
+        if (!selectedOption) {
+          alert("Please select an option to continue");
+          return;
+        }
+
+        if (currentQuestion < totalQuestions) {
+          currentQuestionEl.style.display = "none";
+          currentQuestion++;
+          document.querySelector(
+            `.quiz-question[data-question="${currentQuestion}"]`
+          ).style.display = "block";
+          document.getElementById("prevBtn").style.display = "inline-block";
+          if (currentQuestion === totalQuestions) {
+            document.getElementById("nextBtn").textContent = "Submit";
+          }
+        } else {
+          showResults();
+        }
+        updateProgress();
+      }
+
+      function previousQuestion() {
+        if (currentQuestion > 1) {
+          document.querySelector(
+            `.quiz-question[data-question="${currentQuestion}"]`
+          ).style.display = "none";
+          currentQuestion--;
+          document.querySelector(
+            `.quiz-question[data-question="${currentQuestion}"]`
+          ).style.display = "block";
+          document.getElementById("nextBtn").textContent = "Next";
+          if (currentQuestion === 1) {
+            document.getElementById("prevBtn").style.display = "none";
+          }
+        }
+        updateProgress();
+      }
+
+      function showResults() {
+        const quizContainer = document.getElementById("healthQuiz");
+        const resultDiv = document.getElementById("quizResult");
+
+        // Hide questions and navigation
+        document.querySelector(".quiz-container").style.display = "none";
+        document.querySelector(".quiz-navigation").style.display = "none";
+
+        // Show personalized results
+        resultDiv.innerHTML = `
+          <div class="alert alert-success">
+            <h4 class="alert-heading">Health Assessment Complete!</h4>
+            <p>Based on your responses, here are some recommendations:</p>
+            <ul>
+              <li>Consider increasing your physical activity</li>
+              <li>Practice stress management techniques</li>
+              <li>Maintain a consistent sleep schedule</li>
+            </ul>
+            <button class="btn btn-primary mt-3" onclick="restartQuiz()">Take Quiz Again</button>
+          </div>
+        `;
+        resultDiv.style.display = "block";
+      }
+
+      function restartQuiz() {
+        currentQuestion = 1;
+        document.querySelector(".quiz-container").style.display = "block";
+        document.querySelector(".quiz-navigation").style.display = "block";
+        document.getElementById("quizResult").style.display = "none";
+        document
+          .querySelectorAll(".quiz-question")
+          .forEach((q) => (q.style.display = "none"));
+        document.querySelector(
+          '.quiz-question[data-question="1"]'
+        ).style.display = "block";
+        document.getElementById("nextBtn").textContent = "Next";
+        document.getElementById("prevBtn").style.display = "none";
+        document
+          .querySelectorAll('input[type="radio"]')
+          .forEach((input) => (input.checked = false));
+        updateProgress();
+      }
+
+      // Initialize quiz
+      updateProgress();
+
+      // Add this script for contact functionality
+      function showAddContactForm() {
+        document.getElementById('addContactForm').style.display = 'block';
+      }
+
+      function hideAddContactForm() {
+        document.getElementById('addContactForm').style.display = 'none';
+      }
+
+      function addNewContact(event) {
+        event.preventDefault();
+        
+        const name = document.getElementById('contactName').value;
+        const role = document.getElementById('contactRole').value;
+        const phone = document.getElementById('contactPhone').value;
+        
+        // Format phone number for href
+        const formattedPhone = phone.replace(/[\s-]/g, '');
+        
+        const contactHtml = `
+          <div class="contact-item d-flex align-items-center p-3 mb-3 bg-opacity-10 bg-light rounded">
+            <div class="contact-icon me-3">
+              <i class="fas fa-user-md fa-2x text-primary"></i>
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="mb-1">${name}</h5>
+              <div>${role}</div>
+              <div class="text-muted">${phone}</div>
+            </div>
+            <a href="tel:${formattedPhone}" class="btn btn-danger">
+              <i class="fas fa-phone-alt"></i>
+            </a>
+          </div>
+        `;
+
+        document.getElementById('contactsList').insertAdjacentHTML('beforeend', contactHtml);
+        
+        // Reset form and hide it
+        event.target.reset();
+        hideAddContactForm();
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

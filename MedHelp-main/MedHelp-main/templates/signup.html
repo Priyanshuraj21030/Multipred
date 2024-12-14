@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" id="html" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Multi Pred | Sign Up</title>
+    <link rel="icon" href="/MedHelp-main/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <style>
+      :root {
+        --primary-gradient: linear-gradient(45deg, #2937f0, #9f1ae2);
+        --hover-gradient: linear-gradient(45deg, #9f1ae2, #2937f0);
+        --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #0c0c1e, #1a1a3c);
+        color: #fff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .signup-container {
+        max-width: 500px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      .form-control {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+        transition: var(--transition);
+      }
+
+      .form-control:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 0 0.25rem rgba(41, 55, 240, 0.25);
+        color: #fff;
+      }
+
+      .btn-primary {
+        background: var(--primary-gradient);
+        border: none;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: 500;
+        transition: var(--transition);
+      }
+
+      .btn-primary:hover {
+        background: var(--hover-gradient);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(41, 55, 240, 0.3);
+      }
+
+      .text-decoration-none {
+        color: #9f1ae2;
+        transition: var(--transition);
+      }
+
+      .text-decoration-none:hover {
+        color: #2937f0;
+        transform: translateX(5px);
+        display: inline-block;
+      }
+
+      .signup-link a, .login-link a {
+        position: relative;
+        display: inline-block;
+        padding: 0.25rem 0;
+      }
+
+      .signup-link a::after, .login-link a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background: var(--primary-gradient);
+        transform-origin: bottom right;
+        transition: transform 0.3s ease-out;
+      }
+
+      .signup-link a:hover::after, .login-link a:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Include your existing navbar here -->
+    
+    <div class="container">
+      <div class="signup-container">
+        <div class="login-header">
+          <img src="/MedHelp-main/logo.png" alt="Multi Pred Logo" style="width: 80px; margin-bottom: 1rem;">
+          <h2>Create Account</h2>
+          <p class="text-muted">Join Multi Pred for personalized health tracking</p>
+        </div>
+        
+        <form action="{{ url_for('signup') }}" method="POST">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" required>
+                <label for="firstName">First Name</label>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" required>
+                <label for="lastName">Last Name</label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-floating my-3">
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+            <label for="email">Email address</label>
+          </div>
+          
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+            <label for="password">Password</label>
+          </div>
+          
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Create Account</button>
+          </div>
+          
+          <div class="text-center mt-4">
+            <p class="mb-0">Already have an account? 
+              <a href="login.html" class="text-decoration-none">
+                <i class="fas fa-sign-in-alt me-1"></i>Login
+              </a>
+            </p>
+          </div>
+        </form>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+          <a href="index.html" class="btn btn-outline-light">
+            <i class="fas fa-home me-2"></i>Back to Home
+          </a>
+          <a href="login.html" class="btn btn-link text-light">
+            <i class="fas fa-sign-in-alt me-2"></i>Already have an account?
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.querySelector('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      try {
+        // Show loading state
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Creating Account...';
+        submitBtn.disabled = true;
+
+        // Basic validation
+        if (!firstName || !lastName || !email || !password || !confirmPassword) {
+          throw new Error('Please fill in all fields');
+        }
+
+        if (password !== confirmPassword) {
+          throw new Error('Passwords do not match');
+        }
+
+        if (password.length < 8) {
+          throw new Error('Password must be at least 8 characters long');
+        }
+
+        // For demo purposes, we'll show success message and redirect
+        // In a real app, you would make an API call here
+        setTimeout(() => {
+          alert('Account created successfully! Please login.');
+          window.location.href = 'login.html';
+        }, 1500);
+
+      } catch (error) {
+        alert(error.message);
+        submitBtn.innerHTML = 'Create Account';
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Password strength indicator
+    const passwordInput = document.getElementById('password');
+    passwordInput.addEventListener('input', function() {
+      const password = this.value;
+      let strength = 0;
+      
+      // Length check
+      if(password.length >= 8) strength += 25;
+      // Contains number
+      if(/\d/.test(password)) strength += 25;
+      // Contains letter
+      if(/[a-zA-Z]/.test(password)) strength += 25;
+      // Contains special character
+      if(/[^A-Za-z0-9]/.test(password)) strength += 25;
+
+      // Update strength indicator
+      const strengthBar = document.createElement('div');
+      strengthBar.className = 'progress mt-2';
+      strengthBar.innerHTML = `
+        <div class="progress-bar ${getStrengthClass(strength)}" 
+             style="width: ${strength}%">
+          ${getStrengthText(strength)}
+        </div>
+      `;
+
+      // Replace existing strength indicator
+      const existingBar = this.nextElementSibling;
+      if(existingBar && existingBar.classList.contains('progress')) {
+        existingBar.remove();
+      }
+      this.insertAdjacentElement('afterend', strengthBar);
+    });
+
+    function getStrengthClass(strength) {
+      if (strength <= 25) return 'bg-danger';
+      if (strength <= 50) return 'bg-warning';
+      if (strength <= 75) return 'bg-info';
+      return 'bg-success';
+    }
+
+    function getStrengthText(strength) {
+      if (strength <= 25) return 'Weak';
+      if (strength <= 50) return 'Fair';
+      if (strength <= 75) return 'Good';
+      return 'Strong';
+    }
+    </script>
+  </body>
+</html> 

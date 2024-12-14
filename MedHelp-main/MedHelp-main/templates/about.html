@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" id="html" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Multi Pred | About</title>
+    <link rel="icon" href="/MedHelp-main/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+      :root {
+        --primary-gradient: linear-gradient(45deg, #2937f0, #9f1ae2);
+        --hover-gradient: linear-gradient(45deg, #9f1ae2, #2937f0);
+        --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #0c0c1e, #1a1a3c);
+        color: #fff;
+      }
+
+      .navbar {
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+        background: rgba(12, 12, 30, 0.8) !important;
+      }
+
+      .about-header {
+        background: var(--primary-gradient);
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .about-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('/MedHelp-main/grid-pattern.svg');
+        opacity: 0.1;
+        animation: backgroundMove 20s linear infinite;
+      }
+
+      .about-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .about-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        transition: var(--transition);
+      }
+
+      .about-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .feature-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      .feature-item {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: var(--transition);
+        animation: fadeInUp 0.5s ease-out forwards;
+        opacity: 0;
+      }
+
+      .feature-item:hover {
+        transform: translateX(10px);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .feature-item:nth-child(1) { animation-delay: 0.1s; }
+      .feature-item:nth-child(2) { animation-delay: 0.2s; }
+      .feature-item:nth-child(3) { animation-delay: 0.3s; }
+      .feature-item:nth-child(4) { animation-delay: 0.4s; }
+      .feature-item:nth-child(5) { animation-delay: 0.5s; }
+
+      .text-primary-emphasis {
+        color: #9f1ae2 !important;
+        font-weight: 600;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .section-title {
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+        margin-bottom: 2rem;
+      }
+
+      footer {
+        background: linear-gradient(135deg, #0c0c1e, #1a1a3c);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .footer-quote {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar p-1 sticky-top navbar-expand-lg bg-body-secondary">
+      <div class="container-fluid">
+        <a href="/">
+          <img
+            src="/MedHelp-main/logo.png"
+            width="30"
+            height="30"
+            alt="logo"
+            id="logo"
+            role="button"
+            style="margin-right: 15px"
+          />
+        </a>
+
+        <a class="navbar-brand" href="index.html">Multi Pred</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div id="options">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="index.html"
+                  >Home</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="about.html">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link d-flex align-items-center" href="dashboard.html">
+                  <i class="fas fa-chart-line me-1"></i>
+                  Dashboard
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Features
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="diabetes.html">Diabetes Prediction</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="Breastcancer.html"
+                      >Breast Cancer Prediction</a
+                    >
+                  </li>
+                  <li><a class="dropdown-item" href="bmi.html">BMI Calculator</a></li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item" href="research-insights.html"
+                    >What are we choosing this topic?</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="d-flex flex-row justify-content-center align-items-center"
+            id="themeselect"
+          >
+            <img
+              src="/MedHelp-main/dark.png"
+              alt="Dark"
+              id="modeimg"
+              height="18px"
+              onclick="toggleTheme()"
+              style="cursor: pointer"
+            />
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <header class="about-header text-center">
+      <div class="container">
+        <h1 class="about-title text-white">Multi Pred: Your Online Medical Assistance Hub</h1>
+        <p class="lead text-white-50">Empowering healthcare decisions through technology and innovation</p>
+      </div>
+    </header>
+
+    <main class="container py-5">
+      <div class="about-card reveal">
+        <p class="lead">
+          In today's digital age, the internet plays a significant role in providing access to healthcare information and services. Multi Pred is an emerging online platform that has made a substantial impact in the realm of medical assistance.
+        </p>
+      </div>
+
+      <h2 class="section-title text-center mb-4">Features of Multi Pred</h2>
+      <div class="feature-list">
+        <div class="feature-item">
+          <span class="text-primary-emphasis">Disease Predictions</span>
+          <p>One of the standout features of Multi Pred is its disease prediction functionality. The platform provides predictive algorithms for common conditions like diabetes and breast cancer.</p>
+        </div>
+
+        <div class="feature-item">
+          <span class="text-primary-emphasis">Health Information</span>
+          <p>Multi Pred provides a wealth of medical information, including articles, videos, and guides on various health topics.</p>
+        </div>
+
+        <div class="feature-item">
+          <span class="text-primary-emphasis">BMI Calculator</span>
+          <p>Maintaining a healthy weight is a fundamental aspect of overall health. Multi Pred offers a Body Mass Index (BMI) calculator that allows users to assess their body composition.</p>
+        </div>
+
+        <div class="feature-item">
+          <span class="text-primary-emphasis">Under Development</span>
+          <p>While Multi Pred is already a valuable resource, it is continually under development. The platform's creators are dedicated to expanding its offerings.</p>
+        </div>
+
+        <div class="feature-item">
+          <span class="text-primary-emphasis">Community Support</span>
+          <p>Multi Pred fosters a sense of community by allowing users to share their experiences, ask questions, and connect with others.</p>
+        </div>
+      </div>
+
+      <div class="about-card mt-5 reveal">
+        <h2 class="section-title">The Promise of Multi Pred</h2>
+        <p>Multi Pred's mission is to democratize healthcare knowledge and support, making it accessible to a global audience. By providing free disease predictions, tools like the BMI calculator, and a wealth of health information, it empowers individuals to take an active role in managing their health.</p>
+        <p>However, it's essential to remember that Multi Pred is not a replacement for professional medical advice or services. While it can be a valuable resource for information and self-assessment, individuals should always consult with healthcare professionals for accurate diagnoses and personalized treatment plans.</p>
+      </div>
+    </main>
+
+    <footer class="py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <blockquote class="footer-quote text-center">
+              "Health is the greatest possession. Contentment is the greatest treasure. Confidence is the greatest friend"
+              <footer class="blockquote-footer mt-2">Albert Schweitzer</footer>
+            </blockquote>
+          </div>
+        </div>
+        
+        <div class="text-center py-3">
+          <p class="mb-0">Made with ❤️ by Group 79</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+      function reveal() {
+        const reveals = document.querySelectorAll('.reveal');
+        
+        reveals.forEach(element => {
+          const windowHeight = window.innerHeight;
+          const elementTop = element.getBoundingClientRect().top;
+          const elementVisible = 150;
+          
+          if (elementTop < windowHeight - elementVisible) {
+            element.classList.add('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', reveal);
+
+      document.addEventListener('DOMContentLoaded', reveal);
+    </script>
+  </body>
+</html>
